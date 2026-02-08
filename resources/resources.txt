@@ -1,0 +1,5 @@
+# Information on git collaboration
+
+https://devot.team/blog/git-collaboration
+https://github.com/hei1sme/git-github-book
+https://dev.to/gladyspascual/a-beginner-s-guide-to-using-git-when-working-with-a-team-for-the-first-time-1hba
