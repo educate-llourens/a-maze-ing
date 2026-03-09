@@ -1,6 +1,6 @@
 MAIN= a_maze_ing.py
 CONFIG= config.txt
-VENV_DIR= venv
+VENV_DIR= amazeing_venv
 BIN_DIR= $(VENV_DIR)/bin
 PYTHON= $(BIN_DIR)/python3
 PIP= $(BIN_DIR)/pip
@@ -25,6 +25,9 @@ run:
 debug:
 	$(PYTHON) -m pdb $(MAIN) $(CONFIG)
 
+test:
+	cd $(VENV_DIR)
+	$(PIP) install pytest
 
 clean:
 	rm -rf __pycache__
