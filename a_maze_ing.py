@@ -6,7 +6,7 @@ def parse_config_file() -> dict:
 
 
 def main() -> None:
-    parse_config_file()
+    maze_configuration = parse_config_file()
 
 
 if __name__ == "__main__":

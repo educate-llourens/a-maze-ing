@@ -33,7 +33,6 @@ clean:
 	rm -rf __pycache__
 	rm -rf .mypy_cache
 	rm -rf venv
-# 	This is for the pytest library later
 	rm -rf .pytest_cache
 
 lint:
