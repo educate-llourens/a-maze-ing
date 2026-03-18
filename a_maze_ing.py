@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
-def parse_config_file() -> dict:
-    config_dict: dict = {}
-    return config_dict
+def parse_config_file(config_file: str) -> dict:
+    pass
 
 
 def main() -> None:
-    maze_configuration = parse_config_file()
+    pass
 
 
 if __name__ == "__main__":
