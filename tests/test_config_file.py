@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 
+import pytest
 from a_maze_ing import parse_config_file
 
 
+@pytest.mark.config
 def test_retrieve_width():
     config_info: dict = parse_config_file()
 
     assert config_info["WIDTH"] == 20
 
 
+@pytest.mark.config
 def test_retrieve_all_items():
     config_info: dict = parse_config_file()
 
@@ -19,24 +22,15 @@ def test_retrieve_all_items():
     assert config_info["PERFECT"] is True
 
 
+@pytest.mark.config
 def test_retrieve_commented_seed():
     conf_info: dict = parse_config_file()
 
     assert conf_info["SEED"] == 0
 
 
+@pytest.mark.config
 def test_retrieve_uncommented_seed():
     conf_info: dict = parse_config_file()
 
     assert conf_info["SEED"] == 42
-
-
-def main() -> None:
-    test_retrieve_width()
-    test_retrieve_all_items()
-    test_retrieve_commented_seed()
-    test_retrieve_uncommented_seed()
-
-
-if __name__ == "__main__":
-    main()
