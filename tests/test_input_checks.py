@@ -6,7 +6,7 @@ from a_maze_ing import InputError
 
 
 @pytest.mark.input
-def file_not_found():
+def test_file_not_found():
     with pytest.raises(FileNotFoundError, match="FileNotFound Error: Could not"
                        "find config.txt"):
         input_checks(["./program_name", "confeg.txt"])
@@ -27,6 +27,6 @@ def test_first_argv():
 
 
 @pytest.mark.input
-def correct_input():
+def test_correct_input():
     result = input_checks(["./program_name", "config.txt"])
     assert result is not None
