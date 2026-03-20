@@ -6,30 +6,35 @@ from a_maze_ing import InputError
 
 
 @pytest.fixture
-def input_one_arg(monkeypatch):
-    monkeypatch.setattr("sys.argv", ["./program_name"])
+def input_two_arg(monkeypatch):
+    monkeypatch.setattr("sys.argv", ["./program_name", "requirements.txt",
+                                     "config.txt"])
 
 
 @pytest.fixture
 def incorrect_argv1(monkeypatch):
-    monkeypatch.setattr("sys.argv", ["./program_name", "amazed.py",
-                                     "config.txt"])
-
-
-@pytest.fixture
-def incorrect_argv2(monkeypatch):
-    monkeypatch.setattr("sys.argv", ["./program_name", "a_maze_ing.py",
-                                     "requirements.txt"])
+    monkeypatch.setattr("sys.argv", ["./program_name", "a_maze_ing.py"])
 
 
 @pytest.fixture
 def correct_args(monkeypatch):
-    monkeypatch.setattr("sys.argv", ["./program_name", "a_maze_ing.py",
-                                     "config.txt"])
+    monkeypatch.setattr("sys.argv", ["./program_name", "config.txt"])
+
+
+@pytest.fixture
+def incorrect_file(monkeypatch):
+    monkeypatch.setattr("sys.argv", ["./program_name", "confeg.txt"])
 
 
 @pytest.mark.input
-def test_argc_is_two(input_one_arg):
+def file_not_found(incorrect_file):
+    with pytest.raises(FileNotFoundError, match="FileNotFound Error: Could not"
+                       "find config.txt"):
+        input_checks()
+
+
+@pytest.mark.input
+def test_argc_is_one(input_one_arg):
     with pytest.raises(InputError, match="InputError: The number of arguments"
                        "is not 1"):
         input_checks()
@@ -38,13 +43,6 @@ def test_argc_is_two(input_one_arg):
 @pytest.mark.input
 def test_first_argv(incorrect_argv1):
     with pytest.raises(InputError, match="InputError: First argument is not"
-                       "a_maze_ing.py file"):
-        input_checks()
-
-
-@pytest.mark.input
-def test_second_argv():
-    with pytest.raises(InputError, match="InputError: Second argument is not"
                        "config.txt"):
         input_checks()
 
