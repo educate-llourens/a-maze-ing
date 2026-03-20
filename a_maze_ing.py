@@ -4,6 +4,10 @@ def parse_config_file(config_file: str) -> dict:
     pass
 
 
+def input_checks() -> None:
+    pass
+
+
 def main() -> None:
     pass
 
