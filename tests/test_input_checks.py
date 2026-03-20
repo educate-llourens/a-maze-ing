@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-import sys
 import pytest
 from a_maze_ing import input_checks
+from a_maze_ing import InputError
 
 
 @pytest.fixture
@@ -31,7 +31,7 @@ def correct_args(monkeypatch):
 @pytest.mark.input
 def test_argc_is_two(input_one_arg):
     with pytest.raises(InputError, match="InputError: The number of arguments"
-                       "is not 2"):
+                       "is not 1"):
         input_checks()
 
 

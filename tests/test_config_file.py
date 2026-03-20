@@ -2,6 +2,7 @@
 
 import pytest
 from a_maze_ing import parse_config_file
+from a_maze_ing import ConfigError
 
 
 @pytest.mark.config
