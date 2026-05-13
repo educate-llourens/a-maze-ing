@@ -15,12 +15,10 @@ all: run
 install:
 	python3 -m venv $(VENV_DIR)
 	$(PIP) install --upgrade pip
-	$(PIP) install flake8
-	$(PIP) install mypy
+	$(PIP) install -r requirements.txt
 
 run:
 	$(PYTHON) $(MAIN) $(CONFIG)
-
 
 debug:
 	$(PYTHON) -m pdb $(MAIN) $(CONFIG)
@@ -32,13 +30,13 @@ test:
 clean:
 	rm -rf __pycache__
 	rm -rf .mypy_cache
-	rm -rf venv
+	rm -rf $(VENV_DIR)
 	rm -rf .pytest_cache
 
 lint:
-	$(BIN_DIR)/flake8 .
+	flake8
 	$(PYTHON) -m mypy . $(MYPY_FLAGS)
 
 lint-strict:
-	$(BIN_DIR)/flake8 .
+	flake8
 	$(PYTHON) -m mypy . --strict
