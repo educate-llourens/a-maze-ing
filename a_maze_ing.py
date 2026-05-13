@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 
-from parsing.parsing import return_value
+from parsing.parsing import parsed_input_dict
 
 
 def main() -> None:
+    config_dict: dict = {}
+
     try:
-        return_value()
+        config_dict = parsed_input_dict()
         # Generator
         # Visuals
         # Solver
-    except ValueError as msg:
+    except (ValueError, FileNotFoundError) as msg:
         print(msg)
         return
 
