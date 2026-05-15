@@ -2,8 +2,10 @@
 
 import sys
 import pytest
-from parsing.parsing_errors import InputError
-from parsing.parsing import (user_input, config_file)
+from parsing.parsing_errors import InputError, ConfigError
+from parsing.parsing import (user_input,
+                             config_file,
+                             check_parameters)
 
 
 @pytest.mark.input
@@ -68,3 +70,99 @@ def test_uncommented_config(monkeypatch):
         "PERFECT": True,
         "SEED": '42'
     }
+
+
+@pytest.mark.config
+def test_check_entry_x():
+    config: dict = {}
+
+    config = {
+        "WIDTH": 20,
+        "HEIGHT": 25,
+        "ENTRY": (-1, 0),
+        "EXIT": (19, 14),
+        "OUTPUT_FILE": "maze.txt",
+        "PERFECT": True
+    }
+    with pytest.raises(ConfigError):
+        check_parameters(config)
+
+
+@pytest.mark.config
+def test_check_entry_y():
+    config: dict = {}
+
+    config = {
+        "WIDTH": 20,
+        "HEIGHT": 25,
+        "ENTRY": (0, 30),
+        "EXIT": (19, 14),
+        "OUTPUT_FILE": "maze.txt",
+        "PERFECT": True
+    }
+    with pytest.raises(ConfigError):
+        check_parameters(config)
+
+
+@pytest.mark.config
+def test_check_exit_x():
+    config: dict = {}
+
+    config = {
+        "WIDTH": 20,
+        "HEIGHT": 25,
+        "ENTRY": (0, 0),
+        "EXIT": (-1, 14),
+        "OUTPUT_FILE": "maze.txt",
+        "PERFECT": True
+    }
+    with pytest.raises(ConfigError):
+        check_parameters(config)
+
+
+@pytest.mark.config
+def test_check_exit_y():
+    config: dict = {}
+
+    config = {
+        "WIDTH": 20,
+        "HEIGHT": 25,
+        "ENTRY": (0, 30),
+        "EXIT": (19, 30),
+        "OUTPUT_FILE": "maze.txt",
+        "PERFECT": True
+    }
+    with pytest.raises(ConfigError):
+        check_parameters(config)
+
+
+@pytest.mark.config
+def test_check_entry_matches_exit_x():
+    config: dict = {}
+
+    config = {
+        "WIDTH": 20,
+        "HEIGHT": 25,
+        "ENTRY": (0, 15),
+        "EXIT": (0, 4),
+        "OUTPUT_FILE": "maze.txt",
+        "PERFECT": True
+    }
+    with pytest.raises(ConfigError):
+        check_parameters(config)
+
+
+@pytest.mark.config
+def test_check_entry_matches_exit_y():
+    config: dict = {}
+
+    config = {
+        "WIDTH": 20,
+        "HEIGHT": 25,
+        "ENTRY": (0, 15),
+        "EXIT": (4, 15),
+        "OUTPUT_FILE": "maze.txt",
+        "PERFECT": True
+    }
+    with pytest.raises(ConfigError):
+        check_parameters(config)

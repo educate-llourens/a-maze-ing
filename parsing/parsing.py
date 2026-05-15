@@ -47,14 +47,63 @@ def config_file() -> dict:
 
 
 def parsed_input_dict() -> dict:
+    """It calls the input and config parser.
+
+    Raises:
+        InputError: User input errors
+        ConfigError: config.txt config errors
+
+    Returns:
+        dict: a dictionary containing the config information for the
+        maze generator
+    """
     config_dict: dict
 
-    try:
-        user_input()
-    except InputError as msg:
-        raise InputError(str(msg))
-    try:
-        config_dict = config_file()
-    except KeyError as msg:
-        raise ConfigError(str(msg))
+    user_input()
+    config_dict = config_file()
     return config_dict
+
+
+def check_parameters(config_dict: dict) -> None:
+    entry_x: int
+    entry_y: int
+    exit_x: int
+    exit_y: int
+    width: int
+    height: int
+
+    def get_and_check(key: str) -> tuple | int:
+        result_x: int
+        result_y: int
+        width: int
+        height: int
+
+        if key == "WIDTH":
+            width = config_dict.get("WIDTH")
+            if width is None:
+                raise ConfigError("Could not find 'WIDTH' in the config_dict")
+            return width
+        if key == "HEIGHT":
+            height = config_dict.get("HEIGHT")
+            if height is None:
+                raise ConfigError("Could not find 'HEIGHT' in the config_dict")
+            return height
+        result_x, result_y = config_dict.get(key)
+        if result_x or result_y is None:
+            raise ConfigError(f"Could not find {key} in the config_dict")
+        return (result_x, result_y)
+
+    entry_x, entry_y = get_and_check("ENTRY")
+    exit_x, exit_y = get_and_check("EXIT")
+    width = get_and_check("WIDTH")
+    height = get_and_check("HEIGHT")
+    if entry_x < 0 or entry_x > width:
+        raise ConfigError("Entry x-coordinate out of bounds")
+    if entry_y < 0 or entry_y > height:
+        raise ConfigError("Entry y-coordinate out of bounds")
+    if exit_x < 0 or exit_x > width:
+        raise ConfigError("Exit x-coordinate out of bounds")
+    if exit_y < 0 or exit_y > height:
+        raise ConfigError("Exit y-coordinate out of bounds")
+    if (entry_x == exit_x) or (entry_y == exit_y):
+        raise ConfigError("Entry and exit cannot be the same coordinates")
