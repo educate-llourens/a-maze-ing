@@ -2,6 +2,7 @@
 
 import sys
 from .parsing_errors import InputError, ConfigError
+from typing import Tuple
 
 
 def user_input() -> bool:
@@ -72,31 +73,29 @@ def check_parameters(config_dict: dict) -> None:
     width: int
     height: int
 
-    def get_and_check(key: str) -> tuple | int:
-        result_x: int | None
-        result_y: int | None
-        width: int | None
-        height: int | None
+    def get_and_check_tuple(key: str) -> Tuple:
+        result_x: int
+        result_y: int
+        result: tuple | None
 
-        if key == "WIDTH":
-            width = config_dict.get("WIDTH")
-            if width is None:
-                raise ConfigError("Could not find 'WIDTH' in the config_dict")
-            return width
-        if key == "HEIGHT":
-            height = config_dict.get("HEIGHT")
-            if height is None:
-                raise ConfigError("Could not find 'HEIGHT' in the config_dict")
-            return height
-        result_x, result_y = config_dict.get(key)
-        if (result_x is None) or (result_y is None):
+        result = config_dict.get(key)
+        if result is None:
             raise ConfigError(f"Could not find {key} in the config_dict")
+        result_x, result_y = result
         return (result_x, result_y)
 
-    entry_x, entry_y = get_and_check("ENTRY")
-    exit_x, exit_y = get_and_check("EXIT")
-    width = get_and_check("WIDTH")
-    height = get_and_check("HEIGHT")
+    def get_and_check_int(key: str) -> int:
+        result_int: int | None
+
+        result_int = config_dict.get(key)
+        if result_int is None:
+            raise ConfigError(f"Could not find {key} in config_dict")
+        return int(result_int)
+
+    entry_x, entry_y = get_and_check_tuple("ENTRY")
+    exit_x, exit_y = get_and_check_tuple("EXIT")
+    width = get_and_check_int("WIDTH")
+    height = get_and_check_int("HEIGHT")
     if entry_x < 0 or entry_x > width:
         raise ConfigError("Entry x-coordinate out of bounds")
     if entry_y < 0 or entry_y > height:
