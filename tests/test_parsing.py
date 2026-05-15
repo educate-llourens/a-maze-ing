@@ -137,30 +137,14 @@ def test_check_exit_y():
 
 
 @pytest.mark.config
-def test_check_entry_matches_exit_x():
+def test_check_entry_matches_exit():
     config: dict = {}
 
     config = {
         "WIDTH": 20,
         "HEIGHT": 25,
         "ENTRY": (0, 15),
-        "EXIT": (0, 4),
-        "OUTPUT_FILE": "maze.txt",
-        "PERFECT": True
-    }
-    with pytest.raises(ConfigError):
-        check_parameters(config)
-
-
-@pytest.mark.config
-def test_check_entry_matches_exit_y():
-    config: dict = {}
-
-    config = {
-        "WIDTH": 20,
-        "HEIGHT": 25,
-        "ENTRY": (0, 15),
-        "EXIT": (4, 15),
+        "EXIT": (0, 15),
         "OUTPUT_FILE": "maze.txt",
         "PERFECT": True
     }

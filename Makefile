@@ -24,8 +24,13 @@ debug:
 	$(PYTHON) -m pdb $(MAIN) $(CONFIG)
 
 test:
-	cd $(VENV_DIR)
-	$(PIP) install pytest
+	pytest
+
+test-input:
+	pytest -m input
+
+test-config:
+	pytest -m config
 
 clean:
 	rm -rf __pycache__
@@ -35,7 +40,7 @@ clean:
 
 lint:
 	flake8
-	$(PYTHON) -m mypy . $(MYPY_FLAGS)
+	python3 -m mypy . $(MYPY_FLAGS)
 
 lint-strict:
 	flake8

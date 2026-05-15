@@ -73,10 +73,10 @@ def check_parameters(config_dict: dict) -> None:
     height: int
 
     def get_and_check(key: str) -> tuple | int:
-        result_x: int
-        result_y: int
-        width: int
-        height: int
+        result_x: int | None
+        result_y: int | None
+        width: int | None
+        height: int | None
 
         if key == "WIDTH":
             width = config_dict.get("WIDTH")
@@ -89,7 +89,7 @@ def check_parameters(config_dict: dict) -> None:
                 raise ConfigError("Could not find 'HEIGHT' in the config_dict")
             return height
         result_x, result_y = config_dict.get(key)
-        if result_x or result_y is None:
+        if (result_x is None) or (result_y is None):
             raise ConfigError(f"Could not find {key} in the config_dict")
         return (result_x, result_y)
 
@@ -105,5 +105,5 @@ def check_parameters(config_dict: dict) -> None:
         raise ConfigError("Exit x-coordinate out of bounds")
     if exit_y < 0 or exit_y > height:
         raise ConfigError("Exit y-coordinate out of bounds")
-    if (entry_x == exit_x) or (entry_y == exit_y):
+    if (entry_x == exit_x) and (entry_y == exit_y):
         raise ConfigError("Entry and exit cannot be the same coordinates")
