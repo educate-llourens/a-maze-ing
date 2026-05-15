@@ -1,6 +1,6 @@
 MAIN= a_maze_ing.py
 CONFIG= config.txt
-VENV_DIR= amazeing_venv
+VENV_DIR= maze_venv
 BIN_DIR= $(VENV_DIR)/bin
 PYTHON= $(BIN_DIR)/python3
 PIP= $(BIN_DIR)/pip
