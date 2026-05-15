@@ -6,6 +6,17 @@ from typing import Tuple
 
 
 def user_input() -> bool:
+    """Parses user input from the terminal, checking the program name and
+    arguments are correct.
+
+    Raises:
+        InputError(length): If the number of args is incorrect
+        InputError(program name): If the program name is incorrect
+        InputError(config file name): If the config file name is not correct
+
+    Returns:
+        bool: True if no errors are raised
+    """
     if len(sys.argv) != 2:
         raise InputError("Incorrect number of arguments")
     if sys.argv[0].endswith("a-maze-ing.py") is False:
@@ -18,6 +29,18 @@ def user_input() -> bool:
 
 
 def convert_dict_values(dict_to_format: dict) -> dict:
+    """Converts the string values in the dictionary into the value type it
+    needs to be in order to be used.
+
+    Args:
+        dict_to_format (dict): Receives the dictionary to format
+
+    Raises:
+        KeyError: If it cannot find the necessary key in the dictionary
+
+    Returns:
+        dict: The formatted dictionary with correctly typed values
+    """
     try:
         dict_to_format["WIDTH"] = int(dict_to_format["WIDTH"])
         dict_to_format["HEIGHT"] = int(dict_to_format["HEIGHT"])
@@ -35,6 +58,13 @@ def convert_dict_values(dict_to_format: dict) -> dict:
 
 
 def config_file() -> dict:
+    """Reads the config file and puts all the key-value pairs into a dictionary.
+    It then calls a function to convert the values into their correct type, 
+    then finally returns the formatted dictionary to be used.
+
+    Returns:
+        dict: The correctly formatted dictionary
+    """
     config_info: dict = {}
 
     with open(sys.argv[1], "r") as file:
@@ -48,7 +78,7 @@ def config_file() -> dict:
 
 
 def parsed_input_dict() -> dict:
-    """It calls the input and config parser.
+    """It calls the input and config parser then returns the dictionary.
 
     Raises:
         InputError: User input errors
@@ -66,6 +96,22 @@ def parsed_input_dict() -> dict:
 
 
 def check_parameters(config_dict: dict) -> None:
+    """Checks the entry and exit coordinates are within the map bounds as well
+    as the entry and exit coordinates are not the same
+
+    Args:
+        config_dict (dict): The dictionary containing the information to check
+
+    Raises:
+        ConfigError(entry-x): entry x-coordinate is not within the map
+        ConfigError(entry-y): entry y-coordinate is not within the map
+        ConfigError(exit-x): exit x-coordinate is not within the map
+        ConfigError(exit-y): exit y-coordinate is not within the map
+        ConfigError(not same): entry and exit coordinates are the same
+
+    Returns:
+        None
+    """
     entry_x: int
     entry_y: int
     exit_x: int
@@ -74,6 +120,18 @@ def check_parameters(config_dict: dict) -> None:
     height: int
 
     def get_and_check_tuple(key: str) -> Tuple:
+        """Gets the dictionary tuple value and checks the value is None
+
+        Args:
+            key (str): The dictionary key to get the value for
+
+        Raises:
+            ConfigError(tuple-key): could not find the key in the dictionary for
+        exit or entry coordinates
+
+        Returns:
+            Tuple: The dictionary value for the given key
+        """
         result_x: int
         result_y: int
         result: tuple | None
@@ -85,6 +143,18 @@ def check_parameters(config_dict: dict) -> None:
         return (result_x, result_y)
 
     def get_and_check_int(key: str) -> int:
+        """Gets the dictionary int value and checks the value is None
+
+        Args:
+            key (str): The dictionary key to get the value for
+
+        Raises:
+            ConfigError(int-key): could not find the key in the dictionary for
+        the width or height
+
+        Returns:
+            int: The dictionary value for the given key
+        """
         result_int: int | None
 
         result_int = config_dict.get(key)
