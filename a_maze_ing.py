@@ -4,6 +4,8 @@ from parsing.parsing import (parsed_input_dict,
                              check_parameters)
 from parsing.parsing_errors import (InputError,
                                     ConfigError)
+from dps_generator.generation_errors import GenerationError
+from dps_generator.generator import generator
 
 
 def main() -> None:
@@ -32,6 +34,11 @@ def main() -> None:
         return
 
     # Generator ***************************************************************
+    try:
+        generator(config_dict)
+    except (ConfigError, GenerationError) as msg:
+        print(msg)
+        return
 
     # Visuals *****************************************************************
 

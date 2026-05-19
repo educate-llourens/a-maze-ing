@@ -19,9 +19,9 @@ def user_input() -> bool:
     """
     if len(sys.argv) != 2:
         raise InputError("Incorrect number of arguments")
-    if sys.argv[0].endswith("a-maze-ing.py") is False:
+    if sys.argv[0].endswith("a_maze_ing.py") is False:
         raise InputError("Program name is not correct. Needs to "
-                         "be 'a-maze-ing.py")
+                         "be 'a_maze_ing.py")
     if sys.argv[1] != "config.txt":
         raise InputError("Config file name is incorrect. "
                          "It needs to be config.txt")
@@ -58,9 +58,10 @@ def convert_dict_values(dict_to_format: dict) -> dict:
 
 
 def config_file() -> dict:
-    """Reads the config file and puts all the key-value pairs into a dictionary.
-    It then calls a function to convert the values into their correct type, 
-    then finally returns the formatted dictionary to be used.
+    """Reads the config file and puts all the key-value pairs into a
+    dictionary. It then calls a function to convert the values into
+    their correct type, then finally returns the formatted dictionary
+    to be used.
 
     Returns:
         dict: The correctly formatted dictionary
@@ -126,8 +127,8 @@ def check_parameters(config_dict: dict) -> None:
             key (str): The dictionary key to get the value for
 
         Raises:
-            ConfigError(tuple-key): could not find the key in the dictionary for
-        exit or entry coordinates
+            ConfigError(tuple-key): could not find the key in the dictionary
+            for exit or entry coordinates
 
         Returns:
             Tuple: The dictionary value for the given key
