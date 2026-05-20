@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
 
-from .map import create_empty_map
-
-
-def print_maze(print_map: list[list[int]]) -> None:
-    for row in print_map:
-        print(row)
+from dps_generator.map import create_empty_map
+from visuals.display_maze import print_map
 
 
 def generator(config: dict) -> None:
-    empty_map = create_empty_map(config)
-    print_maze(empty_map)
+    map = create_empty_map(config)
+    print_map(map)

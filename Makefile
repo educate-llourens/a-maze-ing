@@ -33,7 +33,7 @@ test-config:
 	pytest -m config
 
 clean:
-	rm -rf __pycache__
+	find . -type d -name "__pycache__" -exec rm -rf {} +
 	rm -rf .mypy_cache
 	rm -rf $(VENV_DIR)
 	rm -rf .pytest_cache

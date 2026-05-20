@@ -2,14 +2,6 @@
 
 from typing import List
 from parsing.parsing_errors import ConfigError
-# from generation_errors import GenerationError
-
-# Binary values:
-#   1111 = 15
-#   0111 = 7
-#   1011 = 11
-#   1101 = 13
-#   1110 = 14
 
 
 class MazeConfig:
