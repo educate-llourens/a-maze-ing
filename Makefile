@@ -16,6 +16,7 @@ install:
 	python3 -m venv $(VENV_DIR)
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
+	git clone https://github.com/codam-coding-college/MLX42.git && cd MLX42 && cmake -B build && cmake --build build -j4
 
 run:
 	$(PYTHON) $(MAIN) $(CONFIG)
