@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
-# from visuals.display_errors import DisplayError
+from visuals.display_errors import DisplayError
+from visuals.read_map import read_hex_map
+import ctypes
 
 
 # Binary values:
@@ -17,58 +19,13 @@
 #   EW | 1010 = 10
 
 
-def print_top(row: list[int]) -> None:
-    north_numbers: list[int] = [7, 3, 6, 5]
+def mlx_display(list: int)
 
-    for cell in row:
-        if cell not in north_numbers:
-            print("+─+", end="")
-        else:
-            print("   ", end="")
-    print("")
+def display_map() -> None:
+    map_rows: list[str]
 
-
-def print_middle(row: list[int]) -> None:
-    east_numbers: list[int] = [13, 9, 11, 3]
-    west_numbers: list[int] = [14, 12, 10, 6]
-
-    for cell in row:
-        if cell in east_numbers and cell in west_numbers:
-            print("   ", end="")
-        elif cell in east_numbers:
-            print("│  ", end="")
-        elif cell in west_numbers:
-            print("  │", end="")
-        else:
-            print("│ │", end="")
-    print("")
-
-
-def print_bottom(row: list[int]) -> None:
-    south_numbers: list[int] = [13, 12, 9, 5]
-
-    for cell in row:
-        if cell not in south_numbers:
-            print("+─+", end="")
-        else:
-            print("  ", end="")
-    print("")
-
-
-def create_empty_grid(map: list[list[int]]) -> None:
-    for row in map:
-        print_top(row)
-        print_middle(row)
-
-
-def print_map(print_map: list[list[int]]) -> None:
-    create_empty_grid(print_map)
-
-
-if __name__ == "__main__":
-    map = [
-        [5, 11, 11, 13],
-        [15, 7, 15, 13],
-        [15, 15, 15, 15]
-    ]
-    create_empty_grid(map)
+    map_rows = read_hex_map()
+    create_map()
+    # Convert to hex
+    # Convert to directions
+    mlx_display(map_rows)
