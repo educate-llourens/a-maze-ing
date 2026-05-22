@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by laveerka, lelouren*
+*This project has been created as part of the 42 curriculum by odschreu, lelouren*
 
 # Description
 ## Brief overview
@@ -36,6 +36,13 @@ of the maze and organized our code so that the generation logic can be reused la
 
 # Additional Information
 ## Structure and format of the config file
+WIDTH=20
+HEIGHT=25
+ENTRY=0,0
+EXIT=19,14
+OUTPUT_FILE=maze.txt
+PERFECT=True
+#SEED=42
 
 ## Maze generation Algorithm
 
@@ -45,6 +52,8 @@ of the maze and organized our code so that the generation logic can be reused la
 
 ## Team and project management
 ### Team members
+1. odschreu
+2. lelouren
 
 ### Project planning
 ### What worked well
@@ -52,3 +61,11 @@ of the maze and organized our code so that the generation logic can be reused la
 ### What can be improved
 
 ### Tools
+pytest — unit testing
+mypy — static type checking
+flake8 — code style linting
+make — task automation
+pip — package management
+venv — virtual environment isolation
+build / setuptools — packaging the maze generator
+minilibx-linux — graphical display (C library loaded via ctypes)
