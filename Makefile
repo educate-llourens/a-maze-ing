@@ -16,19 +16,7 @@ install:
 	python3 -m venv $(VENV_DIR)
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
-	sudo apt-get install -y libxext-dev libx11-dev libbsd-dev
-	git clone https://github.com/42Paris/minilibx-linux.git && cd minilibx-linux && make
-	gcc -shared -fPIC -o libmlx.so $(ls *.c | grep -v mlx_lib_xpm.c) -lX11 -lXext -lbsd
-	cd ..
-
-pacman:
-	python3 -m venv $(VENV_DIR)
-	$(PIP) install --upgrade pip
-	$(PIP) install -r requirements.txt
-	sudo pacman -S libxext libx11 libbsd
-	git clone https://github.com/42Paris/minilibx-linux.git && cd minilibx-linux && make
-	gcc -shared -fPIC -o libmlx.so $(ls *.c | grep -v mlx_lib_xpm.c) -lX11 -lXext -lbsd
-	cd ..
+	$(PIP) install "mlx[cpu]"
 
 run:
 	$(PYTHON) $(MAIN) $(CONFIG)
@@ -58,7 +46,6 @@ bonfire:
 	rm -rf .mypy_cache
 	rm -rf $(VENV_DIR)
 	rm -rf .pytest_cache
-	rm -rf minilibx-linux
 
 lint:
 	flake8

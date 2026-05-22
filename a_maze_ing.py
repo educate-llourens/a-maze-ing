@@ -6,7 +6,7 @@ from parsing.parsing_errors import (InputError,
                                     ConfigError)
 from dps_generator.generation_errors import GenerationError
 from dps_generator.generator import generator
-from visuals.read_map import run_display
+from visuals.display_maze import display_maze
 from visuals.display_errors import DisplayError
 
 
@@ -44,7 +44,7 @@ def main() -> None:
 
     # Visuals *****************************************************************
     try:
-        run_display()
+        display_maze(config_dict)
     except DisplayError as msg:
         print(msg)
         return
