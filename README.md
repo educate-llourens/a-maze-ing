@@ -36,6 +36,7 @@ of the maze and organized our code so that the generation logic can be reused la
 
 # Additional Information
 ## Structure and format of the config file
+```
 WIDTH=20
 HEIGHT=25
 ENTRY=0,0
@@ -43,6 +44,7 @@ EXIT=19,14
 OUTPUT_FILE=maze.txt
 PERFECT=True
 #SEED=42
+```
 
 ## Maze generation Algorithm
 
@@ -61,11 +63,18 @@ PERFECT=True
 ### What can be improved
 
 ### Tools
-pytest — unit testing
-mypy — static type checking
-flake8 — code style linting
-make — task automation
-pip — package management
-venv — virtual environment isolation
-build / setuptools — packaging the maze generator
-minilibx-linux — graphical display (C library loaded via ctypes)
+- `pytest` — unit testing
+- `mypy` — static type checking
+- `flake8` — code style linting
+- `make` — task automation
+- `pip` — package management
+- `venv` — virtual environment isolation
+- `build` / `setuptools` — packaging the maze generator
+- `minilibx-linux` — graphical display (C library loaded via ctypes)
+- `Claude` — concept explanation, debugging, project planning
+
+#### AI usage
+Claude:
+- Breaking down project requirements into daily tasks
+- Explaining concepts such as ctypes and algorithms
+- Formatting
