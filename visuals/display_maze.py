@@ -20,7 +20,9 @@ import ctypes
 
 
 def mlx_display(list: int) -> None:
-    mlx = ctypes.CDLL("MLX42/build/")
+    mlx: ctypes.CDLL = ctypes.CDLL("libmlx.so")
+
+    
 
 def display_map() -> None:
     map_rows: list[str]
