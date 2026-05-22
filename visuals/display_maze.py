@@ -19,13 +19,13 @@ import ctypes
 #   EW | 1010 = 10
 
 
-def mlx_display(list: int)
+def mlx_display(list: int) -> None:
+    mlx = ctypes.CDLL("MLX42/build/")
 
 def display_map() -> None:
     map_rows: list[str]
 
-    map_rows = read_hex_map()
     create_map()
-    # Convert to hex
+    map_rows = read_hex_map()
     # Convert to directions
     mlx_display(map_rows)
