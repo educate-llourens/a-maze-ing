@@ -18,7 +18,7 @@ def test_nbr_arguments(monkeypatch):
 
 @pytest.mark.input
 def test_input_two_correct_items(monkeypatch):
-    monkeypatch.setattr(sys, "argv", ["a-maze-ing.py", "config.txt"])
+    monkeypatch.setattr(sys, "argv", ["a_maze_ing.py", "config.txt"])
     assert user_input() is True
 
 

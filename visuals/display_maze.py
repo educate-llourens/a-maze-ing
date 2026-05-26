@@ -2,6 +2,7 @@
 
 from visuals.display_errors import DisplayError
 from visuals.read_map import read_hex_map
+from parsing.parsing_errors import FileError
 from enum import Enum
 # from mlx import Mlx
 
@@ -21,18 +22,18 @@ from enum import Enum
 #   EW | 0101 = 5
 
 
-class Directions(Enum):
-    ALL = 15
-    N = 14
-    E = 13
-    S = 11
-    W = 7
-    NE = 12
-    NS = 10
-    NW = 6
-    SW = 3
-    SE = 9
-    EW = 5
+# class Directions(Enum):
+#     ALL = 15
+#     N = 14
+#     E = 13
+#     S = 11
+#     W = 7
+#     NE = 12
+#     NS = 10
+#     NW = 6
+#     SW = 3
+#     SE = 9
+#     EW = 5
 
 
 # def mlx_display(list: int) -> None:
@@ -41,12 +42,11 @@ class Directions(Enum):
 
 
 def display_maze(configs: dict) -> None:
-    maze: list[int] = []
-    entry: tuple
-    exit: tuple
+    maze: list[list[int]] = []
     path: str = ""
 
-    maze, entry, exit, path = read_hex_map(configs)
-    print(f"{maze}\n{entry}\n{exit}\n{path}")
-    # Convert to directions
+    try:
+        maze, path = read_hex_map()
+    except Exception as msg:
+        raise FileError(msg)
     # mlx_display(map_rows)
