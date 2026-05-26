@@ -1,8 +1,6 @@
 from visuals.display_errors import DisplayError
-from visuals.display_maze import print_map
-from visuals.read_map import run_display
+from visuals.read_map import read_hex_map
 
 
 __all__ = ["DisplayError",
-           "print_map",
-           "run_display"]
+           "read_hex_map"]

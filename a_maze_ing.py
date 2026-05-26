@@ -3,10 +3,9 @@
 from parsing.parsing import (parsed_input_dict,
                              check_parameters)
 from parsing.parsing_errors import (InputError,
-                                    ConfigError)
-from dps_generator.generation_errors import GenerationError
-from dps_generator.generator import generator
-from visuals.read_map import run_display
+                                    ConfigError,
+                                    FileError)
+from visuals.display_maze import display_maze
 from visuals.display_errors import DisplayError
 
 
@@ -31,21 +30,21 @@ def main() -> None:
     try:
         config_dict = parsed_input_dict()
         check_parameters(config_dict)
-    except (InputError, ConfigError) as msg:
+    except (InputError, ConfigError, FileError) as msg:
         print(msg)
         return
 
     # Generator ***************************************************************
-    try:
-        generator(config_dict)
-    except (ConfigError, GenerationError) as msg:
-        print(msg)
-        return
+    # try:
+    #     generator(config_dict)
+    # except (ConfigError, GenerationError) as msg:
+    #     print(msg)
+    #     return
 
     # Visuals *****************************************************************
     try:
-        run_display()
-    except DisplayError as msg:
+        display_maze(config_dict)
+    except (DisplayError, FileError) as msg:
         print(msg)
         return
 

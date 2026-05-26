@@ -8,3 +8,8 @@ class ConfigError(Exception):
 class InputError(Exception):
     def __init__(self, msg: str):
         super().__init__(f"Input Error: {msg}")
+
+
+class FileError(Exception):
+    def __init__(self, msg: str):
+        super().__init__(f"File Error: {msg}")

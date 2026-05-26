@@ -1,4 +1,4 @@
 flake8
 mypy
 pytest
-pymlx
+# mlx @ file:./mlx_library/mlx-2.2-py3-ubuntu-any.whl
