@@ -2,20 +2,37 @@
 
 from visuals.display_errors import DisplayError
 from visuals.read_map import read_hex_map
+from enum import Enum
 # from mlx import Mlx
+
+# W S E N
 
 # Binary values:
 #   A  | 1111 = 15
-#   N  | 0111 = 7
-#   E  | 1011 = 11
-#   S  | 1101 = 13
-#   W  | 1110 = 14
-#   NE | 0011 = 3
-#   NS | 0101 = 5
+#   N  | 1110 = 14
+#   E  | 1101 = 13
+#   S  | 1011 = 11
+#   W  | 0111 = 7
+#   NE | 1100 = 12
+#   NS | 1010 = 10
 #   NW | 0110 = 6
-#   SW | 1100 = 12
+#   SW | 0011 = 3
 #   SE | 1001 = 9
-#   EW | 1010 = 10
+#   EW | 0101 = 5
+
+
+class Directions(Enum):
+    ALL = 15
+    N = 14
+    E = 13
+    S = 11
+    W = 7
+    NE = 12
+    NS = 10
+    NW = 6
+    SW = 3
+    SE = 9
+    EW = 5
 
 
 # def mlx_display(list: int) -> None:
@@ -23,23 +40,13 @@ from visuals.read_map import read_hex_map
 #     connection_ptr = mlx.mlx_init()
 
 
-def read_hex_map(configs: dict) -> list[str]:
-    str_map: list[str] = []
-    row: str = ""
-    output_file: str = "tests/output_file.txt"
-    # output_file: str = "output_file.txt"
-
-    with open(output_file, "r") as maze_file:
-        for line in maze_file:
-            row = maze_file.readline()
-            str_map.append(row)
-    return str_map
-
-
 def display_maze(configs: dict) -> None:
-    map_rows: list[str]
+    maze: list[int] = []
+    entry: tuple
+    exit: tuple
+    path: str = ""
 
-    map_rows = read_hex_map(configs)
+    maze, entry, exit, path = read_hex_map(configs)
+    print(f"{maze}\n{entry}\n{exit}\n{path}")
     # Convert to directions
     # mlx_display(map_rows)
-    print(map_rows)

@@ -1,5 +1,4 @@
 from visuals.display_errors import DisplayError
-from visuals.display_maze import print_map
 from visuals.read_map import display_maze
 
 
