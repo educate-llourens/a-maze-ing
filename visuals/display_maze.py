@@ -2,9 +2,11 @@
 
 from visuals.display_errors import DisplayError
 from visuals.read_map import read_hex_map
-from parsing.parsing_errors import FileError
-from enum import Enum
-# from mlx import Mlx
+from parsing.parsing_errors import FileError, ConfigError
+from typing import Any
+# from enum import Enum
+from mlx import Mlx
+import signal
 
 # W S E N
 
@@ -36,9 +38,26 @@ from enum import Enum
 #     EW = 5
 
 
-# def mlx_display(list: int) -> None:
-#     mlx: Mlx = Mlx()
-#     connection_ptr = mlx.mlx_init()
+def mlx_display(maze: list[list[int]], configs: dict) -> None:
+    mlx: Mlx = Mlx()
+    window_ptr: Any
+    window_width: int
+    window_height: int
+    window_ptr: Any
+
+    try:
+        window_width = configs["WIDTH"] * 2
+        window_height = configs["HEIGHT"] * 2
+    except KeyError:
+        raise ConfigError("No 'WIDTH or 'HEIGHT' key in config for mlx")
+    initialised_mlx = mlx.mlx_init()
+    if initialised_mlx is None:
+        raise DisplayError("Unable to initialise mlx")
+    window_ptr = mlx.mlx_new_window(initialised_mlx, window_width,
+                                    window_height, "a-maze-ing")
+    signal.signal(signal.SIGINT, mlx.mlx_loop_exit(initialised_mlx))
+    mlx.mlx_loop(initialised_mlx)
+    mlx.mlx_destroy_window(initialised_mlx, window_ptr)
 
 
 def display_maze(configs: dict) -> None:
@@ -49,4 +68,4 @@ def display_maze(configs: dict) -> None:
         maze, path = read_hex_map()
     except Exception as msg:
         raise FileError(msg)
-    # mlx_display(map_rows)
+    mlx_display(maze, configs)

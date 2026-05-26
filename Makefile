@@ -16,7 +16,7 @@ install:
 	python3 -m venv $(VENV_DIR)
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
-	$(PIP) install "mlx[cpu]"
+# 	$(PIP) install "mlx[cpu]"
 
 run:
 	$(PYTHON) $(MAIN) $(CONFIG)

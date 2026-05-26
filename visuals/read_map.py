@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 
 def read_hex_map() -> tuple:
+    """Reads the output.txt for information to create the map and the path
+
+    Returns:
+        int_map: The map filled with ints indicating the wall structure of
+        each cell.
+        path: The string or directional instructions
+    """
     int_map: list[list[int]] = []
     row: list[int] = []
     output_file: str = "tests/output_file.txt"
@@ -16,5 +23,4 @@ def read_hex_map() -> tuple:
         maze_file.readline().strip()
         maze_file.readline().strip()
         path = maze_file.readline().strip()
-
     return (int_map, path)
