@@ -1,4 +1,6 @@
 flake8
 mypy
 pytest
-# mlx @ file:./mlx_library/mlx-2.2-py3-ubuntu-any.whl
+mlx @ file:./libraries/mlx-2.2-py3-none-any.whl
+
+# !!! ERROR: mlx-2.2-py3-ubuntu-any.whl is not a supported wheel on this platform.
