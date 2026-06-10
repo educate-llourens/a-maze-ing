@@ -52,7 +52,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("Error: User exited the program")
+    main()
