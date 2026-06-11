@@ -16,7 +16,6 @@ def draw_maze(drawing: DrawInfo, mlx: Mlx, mlx_ptr) -> None:
         for col_index, cell_value in enumerate(cell_list):
             col_x = col_index * drawing.tile.passage
             col_y = row_index * drawing.tile.passage
-            # top-left corner
             fill_wall(col_x, col_y, drawing.tile.wall, drawing.tile.wall)
             if cell_value & Direction.NORTH.value:
                 fill_wall(col_x + drawing.tile.wall, col_y,
@@ -24,26 +23,18 @@ def draw_maze(drawing: DrawInfo, mlx: Mlx, mlx_ptr) -> None:
             if cell_value & Direction.WEST.value:
                 fill_wall(col_x, col_y + drawing.tile.wall,
                           drawing.tile.wall, drawing.tile.tile)
-
-        # Right border: use East bit of last cell in this row
         col_x = drawing.tile.cols * drawing.tile.passage
         col_y = row_index * drawing.tile.passage
         fill_wall(col_x, col_y, drawing.tile.wall, drawing.tile.wall)
         fill_wall(col_x, col_y + drawing.tile.wall, drawing.tile.wall,
                   drawing.tile.tile)
-
-    # Bottom border
     col_y = drawing.tile.rows * drawing.tile.passage
     for col_index in range(drawing.tile.cols):
         col_x = col_index * drawing.tile.passage
         fill_wall(col_x, col_y, drawing.tile.wall, drawing.tile.wall)
         fill_wall(col_x + drawing.tile.wall, col_y, drawing.tile.tile,
                   drawing.tile.wall)
-
-    # Final bottom-right corner
     fill_wall(drawing.tile.cols * drawing.tile.passage,
               drawing.tile.rows * drawing.tile.passage, drawing.tile.wall,
               drawing.tile.wall)
-    
-    print(f"cols={drawing.tile.cols}, actual={max(len(r) for r in drawing.maze)}")
-    print(f"rows={drawing.tile.rows}, actual={len(drawing.maze)}")
+

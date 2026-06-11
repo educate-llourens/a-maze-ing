@@ -33,5 +33,5 @@ def test_read_hex_map_output() -> None:
         [12, 5, 4, 5, 5, 4, 5, 4, 5, 6, 12, 5, 4, 5, 5, 5, 5, 4, 5, 4, 4, 4, 5, 5, 6]
         ]
     assert entry == (1, 1)
-    assert exit == (19, 14)
-    assert path == "SWSESWSESWSSSEESEEENEESESEESSSEEESSSEEENNENEE"
+    assert exit == (19, 3)
+    assert path == "EEENEESESESESESEEEEEENEENE"
