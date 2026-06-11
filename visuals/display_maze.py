@@ -1,90 +1,56 @@
 #!/usr/bin/env python3
 
 from visuals.display_errors import DisplayError
-from visuals.read_map import read_hex_map
 from parsing.parsing_errors import FileError
+from visuals.display_classes import TileInfo, Window, Image, DrawInfo
+from visuals.drawing import draw_maze
 from mlx import Mlx
 
 
-def mlx_display(maze: list[list[int]], configs: dict, path: str) -> None:
+def mlx_display(maze: list[list[int]], entry, exit, path: str) -> None:
     mlx: Mlx = Mlx()
     mlx_ptr = mlx.mlx_init()
+    tile: TileInfo = TileInfo(maze)
+    window: Window = Window(tile, mlx, mlx_ptr)
+    image: Image = Image(mlx, mlx_ptr)
+    draw_data: DrawInfo = DrawInfo(maze, tile, window, image)
 
-    TILE = 48
-    WALL = 48
-    STEP = TILE + WALL
-
-    rows = len(maze)
-    cols = max(len(row) for row in maze)
-
-    win_w = cols * STEP + WALL
-    win_h = rows * STEP + WALL
-
-    window_ptr = mlx.mlx_new_window(mlx_ptr, win_w, win_h, "A-maze-ing")
-
-    png = mlx.mlx_png_file_to_image(mlx_ptr, "./visuals/assets/brick_wall.png")
-    image_ptr, image_width, image_height = png
-
-    NORTH = 1
-    SOUTH = 2
-    EAST  = 4
-    WEST  = 8
-
-    def fill_wall(px, py, w, h):
-        for ty in range(0, h, image_height):
-            for tx in range(0, w, image_width):
-                mlx.mlx_put_image_to_window(mlx_ptr, window_ptr, image_ptr,
-                                            px + tx, py + ty)
-
-    for row_idx, row in enumerate(maze):
-        for col_idx, cell in enumerate(row):  # use row, not cols
-            cx = col_idx * STEP
-            cy = row_idx * STEP
-
-            fill_wall(cx, cy, WALL, WALL)
-
-            if cell & NORTH:
-                fill_wall(cx + WALL, cy, TILE, WALL)
-
-            if cell & WEST:
-                fill_wall(cx, cy + WALL, WALL, TILE)
-
-    # Right edge — use actual row length, not global cols
-    for row_idx, row in enumerate(maze):
-        cx = len(row) * STEP
-        cy = row_idx * STEP
-        fill_wall(cx, cy, WALL, WALL)
-        if row[-1] & EAST:
-            fill_wall(cx, cy + WALL, WALL, TILE)
-
-    # Bottom edge
-    bottom_row = maze[-1]
-    cy = rows * STEP
-    for col_idx, cell in enumerate(bottom_row):
-        cx = col_idx * STEP
-        fill_wall(cx, cy, WALL, WALL)
-        if cell & SOUTH:
-            fill_wall(cx + WALL, cy, TILE, WALL)
-
-    # Bottom-right corner
-    fill_wall(len(maze[-1]) * STEP, rows * STEP, WALL, WALL)
-
-    mlx.mlx_hook(window_ptr, 33, 0, lambda any: mlx.mlx_loop_exit(mlx_ptr), None)
+    draw_maze(draw_data, mlx, mlx_ptr)
+    mlx.mlx_hook(window.ptr, 33, 0, lambda any: mlx.mlx_loop_exit(mlx_ptr),
+                 None)
     mlx.mlx_loop(mlx_ptr)
 
 
-# def mlx_display(maze: list[list[int]], configs: dict, path: str) -> None:
-#     mlx: Mlx = Mlx()
-#     mlx_ptr = mlx.mlx_init()
-#     window_ptr = mlx.mlx_new_window(mlx_ptr, 500,
-#                                     500, "A-maze-ing")
-#     png_to_window = mlx.mlx_png_file_to_image(mlx_ptr,
-#                                               "./visuals/assets/brick_wall.png")
-#     image_ptr, image_width, image_height = png_to_window
-#     mlx.mlx_put_image_to_window(mlx_ptr, window_ptr, image_ptr, 15, 15)
-#     mlx.mlx_hook(window_ptr, 33, 0, lambda any: mlx.mlx_loop_exit(mlx_ptr),
-#                  None)
-#     mlx.mlx_loop(mlx_ptr)
+def read_hex_map() -> tuple:
+    """Reads the output.txt for information to create the map and the path
+
+    Returns:
+        int_map: The map filled with ints indicating the wall structure of
+        each cell.
+        path: The string or directional instructions
+    """
+    def create_tuple(line: str) -> tuple[int, int]:
+        x, y = line.split(",", 1)
+        return (int(x), int(y))
+
+    int_map: list[list[int]] = []
+    row: list[int] = []
+    output_file: str = "tests/output_file.txt"
+    # output_file: str = "output_file.txt"
+    path: str = ""
+    entry: tuple[int, int]
+    exit: tuple[int, int]
+
+    with open(output_file, "r") as maze_file:
+        for line in maze_file:
+            if line == "\n":
+                break
+            row = [int(char, 16) for char in line.strip()]
+            int_map.append(row)
+        entry = create_tuple(maze_file.readline().strip())
+        exit = create_tuple(maze_file.readline().strip())
+        path = maze_file.readline().strip()
+    return (int_map, entry, exit, path)
 
 
 def display_maze(configs: dict) -> None:
@@ -92,10 +58,14 @@ def display_maze(configs: dict) -> None:
     path: str = ""
 
     try:
-        maze, path = read_hex_map()
+        maze, entry, exit, path = read_hex_map()
+        if len(maze[0]) != configs["WIDTH"]:
+            raise DisplayError("Maze width does not equal config width")
+        if len(maze) != configs["HEIGHT"]:
+            raise DisplayError("Maze height does not equal config height")
     except Exception as msg:
         raise FileError(msg)
     try:
-        mlx_display(maze, configs, path)
+        mlx_display(maze, entry, exit, path)
     except Exception as msg:
         raise DisplayError(msg)

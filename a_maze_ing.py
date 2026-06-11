@@ -20,7 +20,7 @@ def main() -> None:
     Errors: It catches and prints the following errors then exits the program:
         Parsing: InputError, ConfigError
         Generator:
-        Visuals:
+        Visuals: DisplayError, FileError
         Solver:
     """
     # Variables ***************************************************************
