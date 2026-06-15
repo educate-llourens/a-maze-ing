@@ -59,13 +59,13 @@ def display_maze(configs: dict) -> None:
 
     try:
         maze, entry, exit, path = read_hex_map()
-        if len(maze[0]) != configs["WIDTH"]:
-            raise DisplayError("Maze width does not equal config width")
-        if len(maze) != configs["HEIGHT"]:
-            raise DisplayError("Maze height does not equal config height")
     except Exception as msg:
-        raise FileError(msg)
+        raise DisplayError(str(msg))
+    if len(maze[0]) != configs["WIDTH"]:
+        raise DisplayError("Maze width does not equal config width")
+    if len(maze) != configs["HEIGHT"]:
+        raise DisplayError("Maze height does not equal config height")
     try:
         mlx_display(maze, entry, exit, path)
     except Exception as msg:
-        raise DisplayError(msg)
+        raise DisplayError(str(msg))
