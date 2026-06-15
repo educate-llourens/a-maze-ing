@@ -4,22 +4,21 @@ from visuals.display_classes import DrawInfo, Direction
 from mlx import Mlx
 
 
-def has_north_wall(cell_value: int) -> bool:
-    return bool(cell_value & Direction.NORTH.value)
+def draw_resting_maze(drawing: DrawInfo, mlx: Mlx, mlx_ptr) -> None:
+    def has_north_wall(cell_value: int) -> bool:
+        return bool(cell_value & Direction.NORTH.value)
 
+    def has_west_wall(cell_value: int) -> bool:
+        return bool(cell_value & Direction.WEST.value)
 
-def has_west_wall(cell_value: int) -> bool:
-    return bool(cell_value & Direction.WEST.value)
-
-
-def draw_maze(drawing: DrawInfo, mlx: Mlx, mlx_ptr) -> None:
     def fill_wall(start_x: int, start_y: int, width: int, height: int) -> None:
-        for offset_y in range(0, height, image.height):
-            for offset_x in range(0, width, image.width):
+        for offset_y in range(0, height, image.wall_height):
+            for offset_x in range(0, width, image.wall_width):
+                # Do check here for start or exit
                 mlx.mlx_put_image_to_window(
                     mlx_ptr,
                     window_ptr,
-                    image.ptr,
+                    image.wall_ptr,
                     start_x + offset_x,
                     start_y + offset_y,
                 )
@@ -90,4 +89,6 @@ def draw_maze(drawing: DrawInfo, mlx: Mlx, mlx_ptr) -> None:
     draw_bottom_border()
 
 
-
+def draw_maze(drawing: DrawInfo, mlx: Mlx,
+              mlx_ptr, entry_coord, exit_coord) -> None:
+    draw_resting_maze(drawing, mlx, mlx_ptr)

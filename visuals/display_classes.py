@@ -22,8 +22,15 @@ class Window:
 
 class Image:
     def __init__(self, mlx: Mlx, mlx_ptr):
-        self.ptr, self.width, self.height = mlx.mlx_png_file_to_image(
-            mlx_ptr, "./visuals/assets/brick_wall.png")
+        walls = mlx.mlx_png_file_to_image(mlx_ptr,
+                                          "./visuals/assets/wall.png")
+        self.wall_ptr, self.wall_width, self.wall_height = walls
+        start = mlx.mlx_png_file_to_image(mlx_ptr,
+                                          "./visuals/assets/start.png")
+        self.start_ptr, self.start_width, self.start_height = start
+        end = mlx.mlx_png_file_to_image(mlx_ptr,
+                                        "./visuals/assets/end.png")
+        self.end_ptr, self.end_width, self.end_height = end
 
 
 class DrawInfo:
