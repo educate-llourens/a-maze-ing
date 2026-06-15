@@ -65,7 +65,6 @@ def draw_maze(drawing: DrawInfo, mlx: Mlx, mlx_ptr) -> None:
             fill_wall(right_x, row_y + wall, wall, inner)
         fill_wall(right_x, rows * passage, wall, wall)
 
-    tile = drawing.tile
     def draw_bottom_border():
         bottom_y = rows * passage
         for col_index in range(cols):
@@ -74,6 +73,7 @@ def draw_maze(drawing: DrawInfo, mlx: Mlx, mlx_ptr) -> None:
             fill_wall(col_x + wall, bottom_y, inner, wall)
         fill_wall(cols * passage, bottom_y, wall, wall)
 
+    tile = drawing.tile
     image = drawing.image
     window_ptr = drawing.window.ptr
 
