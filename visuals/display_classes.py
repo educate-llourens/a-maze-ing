@@ -25,12 +25,18 @@ class Image:
         walls = mlx.mlx_png_file_to_image(mlx_ptr,
                                           "./visuals/assets/wall.png")
         self.wall_ptr, self.wall_width, self.wall_height = walls
+        if not self.wall_ptr:
+            print("Failed to load wall image!")
         start = mlx.mlx_png_file_to_image(mlx_ptr,
                                           "./visuals/assets/start.png")
         self.start_ptr, self.start_width, self.start_height = start
+        if not self.start_ptr:
+            print("Failed to load start image!")
         end = mlx.mlx_png_file_to_image(mlx_ptr,
                                         "./visuals/assets/end.png")
         self.end_ptr, self.end_width, self.end_height = end
+        if not self.end_ptr:
+            print("Failed to load end image!")
 
 
 class DrawInfo:
