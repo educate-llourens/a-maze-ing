@@ -35,11 +35,13 @@ class Image:
 
 class DrawInfo:
     def __init__(self, maze: list[list[int]], tile: TileInfo, window: Window,
-                 image: Image):
+                 image: Image, entry_coord, exit_coord):
         self.maze = maze
         self.tile = tile
         self.window = window
         self.image = image
+        self.entry_coord = entry_coord
+        self.exit_coord = exit_coord
 
 
 class Direction(Enum):

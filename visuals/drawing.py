@@ -14,11 +14,21 @@ def draw_resting_maze(drawing: DrawInfo, mlx: Mlx, mlx_ptr) -> None:
     def fill_wall(start_x: int, start_y: int, width: int, height: int) -> None:
         for offset_y in range(0, height, image.wall_height):
             for offset_x in range(0, width, image.wall_width):
-                # Do check here for start or exit
                 mlx.mlx_put_image_to_window(
                     mlx_ptr,
                     window_ptr,
                     image.wall_ptr,
+                    start_x + offset_x,
+                    start_y + offset_y,
+                )
+
+    def fill_passage(start_x: int, start_y: int, width: int, height: int) -> None:
+        for offset_y in range(0, height, image.start_height):
+            for offset_x in range(0, width, image.start_width):
+                mlx.mlx_put_image_to_window(
+                    mlx_ptr,
+                    window_ptr,
+                    image.start_ptr,
                     start_x + offset_x,
                     start_y + offset_y,
                 )
@@ -56,6 +66,30 @@ def draw_resting_maze(drawing: DrawInfo, mlx: Mlx, mlx_ptr) -> None:
                 if has_west_wall(cell_value):
                     fill_wall(col_x, row_y + wall, wall, inner)
 
+                # Fill floor if start or end
+                # if row_index == drawing.entry_coord[0]:
+                #     if col_index == drawing.entry_coord[1]:
+                #         mlx.mlx_put_image_to_window(
+                #             mlx_ptr,
+                #             window_ptr,
+                #             image.start_ptr,
+                #             col_x + 48,
+                #             row_y + 48,
+                #         )
+                        # fill_passage(col_x + 48, row_y + 48, 48, 48)
+
+    def draw_entry():
+        row_index, col_index = drawing.entry_coord
+        col_x = col_index * passage
+        row_y = row_index * passage
+        mlx.mlx_put_image_to_window(
+            mlx_ptr,
+            window_ptr,
+            image.start_ptr,
+            col_x + wall,
+            row_y + wall,
+        )
+
     def draw_right_border():
         right_x = cols * passage
         for row_index in range(rows):
@@ -87,8 +121,8 @@ def draw_resting_maze(drawing: DrawInfo, mlx: Mlx, mlx_ptr) -> None:
     draw_internal_walls()
     draw_right_border()
     draw_bottom_border()
+    draw_entry()
 
 
-def draw_maze(drawing: DrawInfo, mlx: Mlx,
-              mlx_ptr, entry_coord, exit_coord) -> None:
+def draw_maze(drawing: DrawInfo, mlx: Mlx, mlx_ptr, entry_coord, exit_coord) -> None:
     draw_resting_maze(drawing, mlx, mlx_ptr)
