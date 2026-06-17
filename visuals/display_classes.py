@@ -50,6 +50,21 @@ class DrawInfo:
         self.exit_coord = exit_coord
 
 
+class DrawingData:
+    def __init__(self, drawing: DrawInfo, mlx, mlx_ptr) -> None:
+        self.tile = drawing.tile
+        self.image = drawing.image
+        self.window_ptr = drawing.window.ptr
+        self.wall = self.tile.wall
+        self.inner = self.tile.tile
+        self.passage = self.tile.passage
+        self.rows = self.tile.rows
+        self.cols = self.tile.cols
+        self.mlx = mlx
+        self.mlx_ptr = mlx_ptr
+        self.maze = drawing.maze
+
+
 class Direction(Enum):
     NORTH = 1
     EAST = 2
