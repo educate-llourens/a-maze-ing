@@ -5,6 +5,7 @@ from parsing.parsing_errors import FileError
 from visuals.display_classes import TileInfo, Window, Image, DrawInfo
 from visuals.drawing import draw_maze
 from mlx import Mlx
+from typing import Any
 
 
 def display_maze(configs: dict) -> None:
@@ -57,7 +58,31 @@ def read_hex_map() -> tuple:
     return (int_map, entry, exit, path)
 
 
-def mlx_display(maze: list[list[int]], entry_coord, exit_coord, path: str) -> None:
+def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
+    mlx: Mlx
+    mlx_ptr: Any
+    window: Window
+    map: list[list[int]]
+    entry: tuple
+    exit: tuple
+    path: str
+
+    mlx, mlx_ptr, window = mlx_data
+    if key_pressed == 114:
+        # regenerate maze
+        mlx.mlx_clear_window(mlx_ptr, window)
+        map, entry, exit, path = read_hex_map()
+        mlx_display(map, entry, exit, path)
+    elif key_pressed == 65307:
+        mlx.mlx_loop_exit(mlx_ptr)
+    elif key_pressed == 115:
+        print("Show path")
+    elif key_pressed == 99:
+        print("Change colours")
+
+
+def mlx_display(maze: list[list[int]], entry_coord, exit_coord,
+                path: str) -> None:
     mlx: Mlx = Mlx()
     mlx_ptr = mlx.mlx_init()
     tile: TileInfo = TileInfo(maze)
@@ -67,6 +92,8 @@ def mlx_display(maze: list[list[int]], entry_coord, exit_coord, path: str) -> No
                                    entry_coord, exit_coord)
 
     draw_maze(draw_data, mlx, mlx_ptr, entry_coord, exit_coord)
+    mlx.mlx_hook(window.ptr, 2, 1, on_key_press,
+                 ((mlx, mlx_ptr, window)))
     mlx.mlx_hook(window.ptr, 33, 0, lambda any: mlx.mlx_loop_exit(mlx_ptr),
                  None)
     mlx.mlx_loop(mlx_ptr)
