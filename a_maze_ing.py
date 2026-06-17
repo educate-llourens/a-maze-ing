@@ -20,7 +20,7 @@ def main() -> None:
     Errors: It catches and prints the following errors then exits the program:
         Parsing: InputError, ConfigError
         Generator:
-        Visuals:
+        Visuals: DisplayError, FileError
         Solver:
     """
     # Variables ***************************************************************
@@ -52,7 +52,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("Error: User exited the program")
+    main()
