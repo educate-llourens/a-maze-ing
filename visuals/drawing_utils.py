@@ -1,4 +1,5 @@
 from visuals.display_classes import DrawingData, MazeInfo, Direction
+from time import sleep
 
 # Functions in file -----------------------------------------------------------
 # 1. has_north_wall
@@ -26,6 +27,7 @@ def fill_wall(data: DrawingData, start_x: int, start_y: int, width: int,
               height: int) -> None:
     for offset_y in range(0, height, data.image.wall_height):
         for offset_x in range(0, width, data.image.wall_width):
+            sleep(0.003)
             data.mlx.mlx_put_image_to_window(
                 data.mlx_ptr,
                 data.window_ptr,
@@ -81,8 +83,8 @@ def draw_entry(data: DrawingData, drawing: MazeInfo):
         data.mlx_ptr,
         data.window_ptr,
         data.image.start_ptr,
-        col_x + data.wall,
-        row_y + data.wall,
+        col_x + data.wall - 8,
+        row_y + data.wall - 10,
     )
 
 
@@ -90,12 +92,13 @@ def draw_exit(data: DrawingData, drawing: MazeInfo):
     row_index, col_index = drawing.exit_coord
     col_x = col_index * data.passage
     row_y = row_index * data.passage
+    sleep(0.05)
     data.mlx.mlx_put_image_to_window(
         data.mlx_ptr,
         data.window_ptr,
         data.image.end_ptr,
         col_x + data.wall,
-        row_y + data.wall,
+        row_y + data.wall - 10,
     )
 
 
