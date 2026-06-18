@@ -39,7 +39,7 @@ class Image:
             print("Failed to load end image!")
 
 
-class DrawInfo:
+class MazeInfo:
     def __init__(self, maze: list[list[int]], tile: TileInfo, window: Window,
                  image: Image, entry_coord, exit_coord):
         self.maze = maze
@@ -51,7 +51,7 @@ class DrawInfo:
 
 
 class DrawingData:
-    def __init__(self, drawing: DrawInfo, mlx, mlx_ptr) -> None:
+    def __init__(self, drawing: MazeInfo, mlx, mlx_ptr) -> None:
         self.tile = drawing.tile
         self.image = drawing.image
         self.window_ptr = drawing.window.ptr

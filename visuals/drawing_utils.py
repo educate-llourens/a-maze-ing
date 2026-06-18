@@ -1,4 +1,4 @@
-from visuals.display_classes import DrawingData, DrawInfo, Direction
+from visuals.display_classes import DrawingData, MazeInfo, Direction
 
 # Functions in file -----------------------------------------------------------
 # 1. has_north_wall
@@ -73,7 +73,7 @@ def draw_internal_walls(data: DrawingData):
                           data.inner)
 
 
-def draw_entry(data: DrawingData, drawing: DrawInfo):
+def draw_entry(data: DrawingData, drawing: MazeInfo):
     row_index, col_index = drawing.entry_coord
     col_x = col_index * data.passage
     row_y = row_index * data.passage
@@ -86,7 +86,7 @@ def draw_entry(data: DrawingData, drawing: DrawInfo):
     )
 
 
-def draw_exit(data: DrawingData, drawing: DrawInfo):
+def draw_exit(data: DrawingData, drawing: MazeInfo):
     row_index, col_index = drawing.exit_coord
     col_x = col_index * data.passage
     row_y = row_index * data.passage

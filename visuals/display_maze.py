@@ -2,7 +2,7 @@
 
 from visuals.display_errors import DisplayError
 from parsing.parsing_errors import FileError
-from visuals.display_classes import TileInfo, Window, Image, DrawInfo
+from visuals.display_classes import TileInfo, Window, Image, MazeInfo
 from visuals.drawing import draw_maze
 from mlx import Mlx
 from typing import Any
@@ -88,7 +88,7 @@ def mlx_display(maze: list[list[int]], entry_coord, exit_coord,
     tile: TileInfo = TileInfo(maze)
     window: Window = Window(tile, mlx, mlx_ptr)
     image: Image = Image(mlx, mlx_ptr)
-    draw_data: DrawInfo = DrawInfo(maze, tile, window, image,
+    draw_data: MazeInfo = MazeInfo(maze, tile, window, image,
                                    entry_coord, exit_coord)
 
     draw_maze(draw_data, mlx, mlx_ptr, entry_coord, exit_coord)
