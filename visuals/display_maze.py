@@ -2,24 +2,28 @@
 
 from visuals.display_errors import DisplayError
 from parsing.parsing_errors import FileError
-from visuals.display_classes import TileInfo, Window, Image, DrawInfo
+from visuals.display_classes import TileInfo, Window, Image, MazeInfo
 from visuals.drawing import draw_maze
 from mlx import Mlx
+from typing import Any
 
 
-def mlx_display(maze: list[list[int]], entry_coord, exit_coord, path: str) -> None:
-    mlx: Mlx = Mlx()
-    mlx_ptr = mlx.mlx_init()
-    tile: TileInfo = TileInfo(maze)
-    window: Window = Window(tile, mlx, mlx_ptr)
-    image: Image = Image(mlx, mlx_ptr)
-    draw_data: DrawInfo = DrawInfo(maze, tile, window, image,
-                                   entry_coord, exit_coord)
+def display_maze(configs: dict) -> None:
+    maze: list[list[int]] = []
+    path: str = ""
 
-    draw_maze(draw_data, mlx, mlx_ptr, entry_coord, exit_coord)
-    mlx.mlx_hook(window.ptr, 33, 0, lambda any: mlx.mlx_loop_exit(mlx_ptr),
-                 None)
-    mlx.mlx_loop(mlx_ptr)
+    try:
+        maze, entry_coord, exit_coord, path = read_hex_map()
+    except Exception as msg:
+        raise DisplayError(str(msg))
+    if len(maze[0]) != configs["WIDTH"]:
+        raise DisplayError("Maze width does not equal config width")
+    if len(maze) != configs["HEIGHT"]:
+        raise DisplayError("Maze height does not equal config height")
+    try:
+        mlx_display(maze, entry_coord, exit_coord, path)
+    except Exception as msg:
+        raise DisplayError(str(msg))
 
 
 def read_hex_map() -> tuple:
@@ -54,19 +58,42 @@ def read_hex_map() -> tuple:
     return (int_map, entry, exit, path)
 
 
-def display_maze(configs: dict) -> None:
-    maze: list[list[int]] = []
-    path: str = ""
+def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
+    mlx: Mlx
+    mlx_ptr: Any
+    window: Window
+    map: list[list[int]]
+    entry: tuple
+    exit: tuple
+    path: str
 
-    try:
-        maze, entry_coord, exit_coord, path = read_hex_map()
-    except Exception as msg:
-        raise DisplayError(str(msg))
-    if len(maze[0]) != configs["WIDTH"]:
-        raise DisplayError("Maze width does not equal config width")
-    if len(maze) != configs["HEIGHT"]:
-        raise DisplayError("Maze height does not equal config height")
-    try:
-        mlx_display(maze, entry_coord, exit_coord, path)
-    except Exception as msg:
-        raise DisplayError(str(msg))
+    mlx, mlx_ptr, window = mlx_data
+    if key_pressed == 114:
+        # regenerate maze
+        mlx.mlx_clear_window(mlx_ptr, window)
+        map, entry, exit, path = read_hex_map()
+        mlx_display(map, entry, exit, path)
+    elif key_pressed == 65307:
+        mlx.mlx_loop_exit(mlx_ptr)
+    elif key_pressed == 115:
+        print("Show path")
+    elif key_pressed == 99:
+        print("Change colours")
+
+
+def mlx_display(maze: list[list[int]], entry_coord, exit_coord,
+                path: str) -> None:
+    mlx: Mlx = Mlx()
+    mlx_ptr = mlx.mlx_init()
+    tile: TileInfo = TileInfo(maze)
+    window: Window = Window(tile, mlx, mlx_ptr)
+    image: Image = Image(mlx, mlx_ptr)
+    draw_data: MazeInfo = MazeInfo(maze, tile, window, image,
+                                   entry_coord, exit_coord)
+
+    draw_maze(draw_data, mlx, mlx_ptr, entry_coord, exit_coord)
+    mlx.mlx_hook(window.ptr, 2, 1, on_key_press,
+                 ((mlx, mlx_ptr, window)))
+    mlx.mlx_hook(window.ptr, 33, 0, lambda any: mlx.mlx_loop_exit(mlx_ptr),
+                 None)
+    mlx.mlx_loop(mlx_ptr)
