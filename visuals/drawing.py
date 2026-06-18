@@ -8,9 +8,11 @@ from mlx import Mlx
 
 
 def draw_maze(drawing: MazeInfo, mlx: Mlx, mlx_ptr, entry_coord,
-              exit_coord) -> None:
+              exit_coord, alternate: bool) -> None:
     data: DrawingData = DrawingData(drawing, mlx, mlx_ptr)
 
+    if alternate is True:
+        data.alternate = True
     draw_top_border(data)
     draw_left_border(data)
     draw_internal_walls(data)

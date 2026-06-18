@@ -28,13 +28,22 @@ def fill_wall(data: DrawingData, start_x: int, start_y: int, width: int,
     for offset_y in range(0, height, data.image.wall_height):
         for offset_x in range(0, width, data.image.wall_width):
             sleep(0.003)
-            data.mlx.mlx_put_image_to_window(
-                data.mlx_ptr,
-                data.window_ptr,
-                data.image.wall_ptr,
-                start_x + offset_x,
-                start_y + offset_y,
-            )
+            if data.alternate is False:
+                data.mlx.mlx_put_image_to_window(
+                    data.mlx_ptr,
+                    data.window_ptr,
+                    data.image.wall_ptr,
+                    start_x + offset_x,
+                    start_y + offset_y,
+                )
+            else:
+                data.mlx.mlx_put_image_to_window(
+                    data.mlx_ptr,
+                    data.window_ptr,
+                    data.image.alt_wall_ptr,
+                    start_x + offset_x,
+                    start_y + offset_y,
+                )
 
 
 def draw_top_border(data: DrawingData):
@@ -79,13 +88,22 @@ def draw_entry(data: DrawingData, drawing: MazeInfo):
     row_index, col_index = drawing.entry_coord
     col_x = col_index * data.passage
     row_y = row_index * data.passage
-    data.mlx.mlx_put_image_to_window(
-        data.mlx_ptr,
-        data.window_ptr,
-        data.image.start_ptr,
-        col_x + data.wall - 8,
-        row_y + data.wall - 10,
-    )
+    if data.alternate is False:
+        data.mlx.mlx_put_image_to_window(
+            data.mlx_ptr,
+            data.window_ptr,
+            data.image.start_ptr,
+            col_x + data.wall - 8,
+            row_y + data.wall - 10,
+        )
+    else:
+        data.mlx.mlx_put_image_to_window(
+            data.mlx_ptr,
+            data.window_ptr,
+            data.image.alt_start_ptr,
+            col_x + data.wall,
+            row_y + data.wall,
+        )
 
 
 def draw_exit(data: DrawingData, drawing: MazeInfo):
@@ -93,13 +111,22 @@ def draw_exit(data: DrawingData, drawing: MazeInfo):
     col_x = col_index * data.passage
     row_y = row_index * data.passage
     sleep(0.05)
-    data.mlx.mlx_put_image_to_window(
-        data.mlx_ptr,
-        data.window_ptr,
-        data.image.end_ptr,
-        col_x + data.wall,
-        row_y + data.wall - 10,
-    )
+    if data.alternate is False:
+        data.mlx.mlx_put_image_to_window(
+            data.mlx_ptr,
+            data.window_ptr,
+            data.image.end_ptr,
+            col_x + data.wall,
+            row_y + data.wall - 10,
+        )
+    else:
+        data.mlx.mlx_put_image_to_window(
+            data.mlx_ptr,
+            data.window_ptr,
+            data.image.end_ptr,
+            col_x + data.wall,
+            row_y + data.wall,
+        )
 
 
 def draw_right_border(data: DrawingData):

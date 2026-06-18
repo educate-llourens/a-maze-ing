@@ -2,7 +2,7 @@
 
 from visuals.display_errors import DisplayError
 from parsing.parsing_errors import FileError
-from visuals.display_classes import TileInfo, Window, Image, MazeInfo
+from visuals.display_classes import TileInfo, Window, Image, MazeInfo, DrawingData
 from visuals.drawing import draw_maze
 from mlx import Mlx
 from typing import Any
@@ -66,19 +66,21 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
     entry: tuple
     exit: tuple
     path: str
+    draw_data: MazeInfo
 
-    mlx, mlx_ptr, window = mlx_data
+    mlx, mlx_ptr, window, entry, exit, draw_data = mlx_data
     if key_pressed == 114:
         # regenerate maze
-        mlx.mlx_clear_window(mlx_ptr, window)
+        mlx.mlx_clear_window(mlx_ptr, window.ptr)
         map, entry, exit, path = read_hex_map()
         mlx_display(map, entry, exit, path)
     elif key_pressed == 65307:
         mlx.mlx_loop_exit(mlx_ptr)
-    elif key_pressed == 115:
+    elif key_pressed == 115:  # s
         print("Show path")
-    elif key_pressed == 99:
-        print("Change colours")
+    elif key_pressed == 99:  # c
+        mlx.mlx_clear_window(mlx_ptr, window.ptr)
+        draw_maze(draw_data, mlx, mlx_ptr, entry, exit, True)
 
 
 def mlx_display(maze: list[list[int]], entry_coord, exit_coord,
@@ -89,11 +91,11 @@ def mlx_display(maze: list[list[int]], entry_coord, exit_coord,
     window: Window = Window(tile, mlx, mlx_ptr)
     image: Image = Image(mlx, mlx_ptr)
     draw_data: MazeInfo = MazeInfo(maze, tile, window, image,
-                                   entry_coord, exit_coord)
+                                   entry_coord, exit_coord, path)
 
-    draw_maze(draw_data, mlx, mlx_ptr, entry_coord, exit_coord)
+    draw_maze(draw_data, mlx, mlx_ptr, entry_coord, exit_coord, False)
     mlx.mlx_hook(window.ptr, 2, 1, on_key_press,
-                 ((mlx, mlx_ptr, window)))
+                 ((mlx, mlx_ptr, window, entry_coord, exit_coord, draw_data)))
     mlx.mlx_hook(window.ptr, 33, 0, lambda any: mlx.mlx_loop_exit(mlx_ptr),
                  None)
     mlx.mlx_loop(mlx_ptr)
