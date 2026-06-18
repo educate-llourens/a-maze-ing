@@ -123,7 +123,7 @@ def draw_exit(data: DrawingData, drawing: MazeInfo):
         data.mlx.mlx_put_image_to_window(
             data.mlx_ptr,
             data.window_ptr,
-            data.image.end_ptr,
+            data.image.alt_end_ptr,
             col_x + data.wall,
             row_y + data.wall,
         )
