@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
 from visuals.display_errors import DisplayError
-from parsing.parsing_errors import FileError
-from visuals.display_classes import TileInfo, Window, Image, MazeInfo, DrawingData
-from visuals.drawing import draw_maze
+from visuals.display_classes import TileInfo, Window, Image, MazeInfo
+from visuals.drawing import draw_maze, draw_solution
 from mlx import Mlx
 from typing import Any
 
@@ -65,7 +64,6 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
     map: list[list[int]]
     entry: tuple
     exit: tuple
-    path: str
     draw_data: MazeInfo
 
     mlx, mlx_ptr, window, entry, exit, draw_data = mlx_data
@@ -73,14 +71,23 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
         # regenerate maze
         mlx.mlx_clear_window(mlx_ptr, window.ptr)
         map, entry, exit, path = read_hex_map()
-        mlx_display(map, entry, exit, path)
+        draw_data.maze = map
+        draw_data.entry = entry
+        draw_data.exit = exit
+        draw_data.path = path
+        draw_maze(draw_data, mlx, mlx_ptr, entry, exit)
     elif key_pressed == 65307:
         mlx.mlx_loop_exit(mlx_ptr)
     elif key_pressed == 115:  # s
-        print("Show path")
+        draw_solution(mlx_data)
     elif key_pressed == 99:  # c
         mlx.mlx_clear_window(mlx_ptr, window.ptr)
-        draw_maze(draw_data, mlx, mlx_ptr, entry, exit, True)
+        if draw_data.alternate is False:
+            draw_data.alternate = True
+            draw_maze(draw_data, mlx, mlx_ptr, entry, exit)
+        else:
+            draw_data.alternate = False
+            draw_maze(draw_data, mlx, mlx_ptr, entry, exit)
 
 
 def mlx_display(maze: list[list[int]], entry_coord, exit_coord,
@@ -93,7 +100,8 @@ def mlx_display(maze: list[list[int]], entry_coord, exit_coord,
     draw_data: MazeInfo = MazeInfo(maze, tile, window, image,
                                    entry_coord, exit_coord, path)
 
-    draw_maze(draw_data, mlx, mlx_ptr, entry_coord, exit_coord, False)
+    draw_data.path = path
+    draw_maze(draw_data, mlx, mlx_ptr, entry_coord, exit_coord)
     mlx.mlx_hook(window.ptr, 2, 1, on_key_press,
                  ((mlx, mlx_ptr, window, entry_coord, exit_coord, draw_data)))
     mlx.mlx_hook(window.ptr, 33, 0, lambda any: mlx.mlx_loop_exit(mlx_ptr),

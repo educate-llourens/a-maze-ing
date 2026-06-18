@@ -61,6 +61,7 @@ class MazeInfo:
         self.entry_coord = entry_coord
         self.exit_coord = exit_coord
         self.path = path
+        self.alternate = False
 
 
 class DrawingData:
@@ -76,7 +77,7 @@ class DrawingData:
         self.mlx = mlx
         self.mlx_ptr = mlx_ptr
         self.maze = drawing.maze
-        self.alternate = False
+        self.alternate = drawing.alternate
 
 
 class Direction(Enum):
