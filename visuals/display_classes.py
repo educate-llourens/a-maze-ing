@@ -37,17 +37,30 @@ class Image:
         self.end_ptr, self.end_width, self.end_height = end
         if not self.end_ptr:
             print("Failed to load end image!")
+        alt_walls = mlx.mlx_png_file_to_image(
+            mlx_ptr, "./visuals/assets/alt_wall.png")
+        self.alt_wall_ptr, self.alt_walls_width, self.alt_walls_height = (
+            alt_walls)
+        alt_start = mlx.mlx_png_file_to_image(
+            mlx_ptr, "./visuals/assets/alt_start.png")
+        self.alt_start_ptr, self.alt_start_width, self.alt_start_height = (
+            alt_start)
+        alt_end = mlx.mlx_png_file_to_image(
+            mlx_ptr, "./visuals/assets/alt_end.png")
+        self.alt_end_ptr, self.alt_end_width, self.alt_end_height = (
+            alt_end)
 
 
 class MazeInfo:
     def __init__(self, maze: list[list[int]], tile: TileInfo, window: Window,
-                 image: Image, entry_coord, exit_coord):
+                 image: Image, entry_coord, exit_coord, path):
         self.maze = maze
         self.tile = tile
         self.window = window
         self.image = image
         self.entry_coord = entry_coord
         self.exit_coord = exit_coord
+        self.path = path
 
 
 class DrawingData:
@@ -63,6 +76,7 @@ class DrawingData:
         self.mlx = mlx
         self.mlx_ptr = mlx_ptr
         self.maze = drawing.maze
+        self.alternate = False
 
 
 class Direction(Enum):
