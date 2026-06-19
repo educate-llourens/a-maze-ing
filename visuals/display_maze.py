@@ -75,19 +75,19 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
         draw_data.entry = entry
         draw_data.exit = exit
         draw_data.path = path
-        draw_maze(draw_data, mlx, mlx_ptr, entry, exit)
+        draw_maze(draw_data, mlx, mlx_ptr)
     elif key_pressed == 65307:
         mlx.mlx_loop_exit(mlx_ptr)
     elif key_pressed == 115:  # s
-        draw_solution(mlx_data)
+        draw_solution(draw_data, mlx, mlx_ptr, entry, exit)
     elif key_pressed == 99:  # c
         mlx.mlx_clear_window(mlx_ptr, window.ptr)
         if draw_data.alternate is False:
             draw_data.alternate = True
-            draw_maze(draw_data, mlx, mlx_ptr, entry, exit)
+            draw_maze(draw_data, mlx, mlx_ptr)
         else:
             draw_data.alternate = False
-            draw_maze(draw_data, mlx, mlx_ptr, entry, exit)
+            draw_maze(draw_data, mlx, mlx_ptr)
 
 
 def mlx_display(maze: list[list[int]], entry_coord, exit_coord,
@@ -101,7 +101,7 @@ def mlx_display(maze: list[list[int]], entry_coord, exit_coord,
                                    entry_coord, exit_coord, path)
 
     draw_data.path = path
-    draw_maze(draw_data, mlx, mlx_ptr, entry_coord, exit_coord)
+    draw_maze(draw_data, mlx, mlx_ptr)
     mlx.mlx_hook(window.ptr, 2, 1, on_key_press,
                  ((mlx, mlx_ptr, window, entry_coord, exit_coord, draw_data)))
     mlx.mlx_hook(window.ptr, 33, 0, lambda any: mlx.mlx_loop_exit(mlx_ptr),

@@ -49,6 +49,8 @@ class Image:
             mlx_ptr, "./visuals/assets/alt_end.png")
         self.alt_end_ptr, self.alt_end_width, self.alt_end_height = (
             alt_end)
+        steps = mlx.mlx_png_file_to_image(mlx_ptr, "./visuals/assets/steps.png")
+        self.steps_ptr, self.steps_width, self.steps_height = steps
 
 
 class MazeInfo:
@@ -78,6 +80,7 @@ class DrawingData:
         self.mlx_ptr = mlx_ptr
         self.maze = drawing.maze
         self.alternate = drawing.alternate
+        self.path = drawing.path
 
 
 class Direction(Enum):

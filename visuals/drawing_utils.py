@@ -2,16 +2,17 @@ from visuals.display_classes import DrawingData, MazeInfo, Direction
 from time import sleep
 
 # Functions in file -----------------------------------------------------------
-# 1. has_north_wall
-# 2. has_west_wall
-# 3. fill_wall
-# 4. draw_top_border
-# 5. draw_left_border
-# 6. draw_internal_walls
-# 7. draw_right_border
-# 8. draw_bottom_border
-# 9. draw_entry
+# 1.  has_north_wall
+# 2.  has_west_wall
+# 3.  fill_wall
+# 4.  draw_top_border
+# 5.  draw_left_border
+# 6.  draw_internal_walls
+# 7.  draw_right_border
+# 8.  draw_bottom_border
+# 9.  draw_entry
 # 10. draw_exit
+# 11. draw_steps
 # -----------------------------------------------------------------------------
 
 
@@ -106,7 +107,25 @@ def draw_entry(data: DrawingData, drawing: MazeInfo):
         )
 
 
-def draw_exit(data: DrawingData, drawing: MazeInfo):
+def draw_right_border(data: DrawingData) -> None:
+    right_x = data.cols * data.passage
+    for row_index in range(data.rows):
+        row_y = row_index * data.passage
+        fill_wall(data, right_x, row_y, data.wall, data.wall)
+        fill_wall(data, right_x, row_y + data.wall, data.wall, data.inner)
+    fill_wall(data, right_x, data.rows * data.passage, data.wall, data.wall)
+
+
+def draw_bottom_border(data: DrawingData) -> None:
+    bottom_y = data.rows * data.passage
+    for col_index in range(data.cols):
+        col_x = col_index * data.passage
+        fill_wall(data, col_x, bottom_y, data.wall, data.wall)
+        fill_wall(data, col_x + data.wall, bottom_y, data.inner, data.wall)
+    fill_wall(data, data.cols * data.passage, bottom_y, data.wall, data.wall)
+
+
+def draw_exit(data: DrawingData, drawing: MazeInfo) -> None:
     row_index, col_index = drawing.exit_coord
     col_x = col_index * data.passage
     row_y = row_index * data.passage
@@ -129,19 +148,14 @@ def draw_exit(data: DrawingData, drawing: MazeInfo):
         )
 
 
-def draw_right_border(data: DrawingData):
-    right_x = data.cols * data.passage
-    for row_index in range(data.rows):
-        row_y = row_index * data.passage
-        fill_wall(data, right_x, row_y, data.wall, data.wall)
-        fill_wall(data, right_x, row_y + data.wall, data.wall, data.inner)
-    fill_wall(data, right_x, data.rows * data.passage, data.wall, data.wall)
-
-
-def draw_bottom_border(data: DrawingData):
-    bottom_y = data.rows * data.passage
-    for col_index in range(data.cols):
-        col_x = col_index * data.passage
-        fill_wall(data, col_x, bottom_y, data.wall, data.wall)
-        fill_wall(data, col_x + data.wall, bottom_y, data.inner, data.wall)
-    fill_wall(data, data.cols * data.passage, bottom_y, data.wall, data.wall)
+def draw_steps(data: DrawingData, coordinates: tuple) -> None:
+    col_index, row_index = coordinates
+    col_x = col_index * data.passage
+    row_y = row_index * data.passage
+    data.mlx.mlx_put_image_to_window(
+        data.mlx_ptr,
+        data.window_ptr,
+        data.image.steps_ptr,
+        col_x + data.wall,
+        row_y + data.wall,
+    )
