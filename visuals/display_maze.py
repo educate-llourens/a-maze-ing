@@ -8,6 +8,18 @@ from typing import Any
 
 
 def display_maze(configs: dict) -> None:
+    """Extracts the map from the output file of the maze generator, does
+    some checks and displays the window for the maze
+
+    Args:
+        configs (dict): Dictionary containing the config information
+
+    Raises:
+        DisplayError: Any file errors will be raised as a display error
+        DisplayError: The width does not match the config width
+        DisplayError: The height does not match the config height
+        DisplayError: Any error raised during the running window
+    """
     maze: list[list[int]] = []
     path: str = ""
 
@@ -58,6 +70,16 @@ def read_hex_map() -> tuple:
 
 
 def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
+    """When a key is pressed, it will run the process connected to that key.
+    Esc (65307) = Exits the program when you press escape
+    r   (114)   = Regenerates the maze
+    s   (115)   = Shows or hides the solution path
+    c   (99)    = Changes the theme of the maze
+
+    Args:
+        key_pressed (int): The key that the user pressed
+        mlx_data (tuple): A collection of data to regenerate the maze
+    """
     mlx: Mlx
     mlx_ptr: Any
     window: Window
@@ -92,6 +114,14 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
 
 def mlx_display(maze: list[list[int]], entry_coord, exit_coord,
                 path: str) -> None:
+    """Runs the loop to display and interact the window containing the maze.
+
+    Args:
+        maze (list[list[int]]): The maze with its open walls etc as an int
+        entry_coord (_type_): The entry coordinates to the maze
+        exit_coord (_type_): The exit coordinates to the maze
+        path (str): The solution path
+    """
     mlx: Mlx = Mlx()
     mlx_ptr = mlx.mlx_init()
     tile: TileInfo = TileInfo(maze)
