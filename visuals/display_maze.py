@@ -77,7 +77,7 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
     d   (100)   = Regenerates DPS maze (Default maze)
     b   (98)    = Regenerates BFS maze
     p   (112)   = Regenerates Prim's maze
-    w           = Regenerates Wilson maze
+    w   (119)   = Regenerates Wilson maze
 
     Args:
         key_pressed (int): The key that the user pressed
@@ -150,9 +150,31 @@ def mlx_display(maze: list[list[int]], entry_coord, exit_coord,
                                    entry_coord, exit_coord, path)
 
     draw_data.path = path
+    create_info_window(mlx, mlx_ptr)
     draw_maze(draw_data, mlx, mlx_ptr)
     mlx.mlx_hook(window.ptr, 2, 1, on_key_press,
                  ((mlx, mlx_ptr, window, entry_coord, exit_coord, draw_data)))
     mlx.mlx_hook(window.ptr, 33, 0, lambda any: mlx.mlx_loop_exit(mlx_ptr),
                  None)
     mlx.mlx_loop(mlx_ptr)
+
+
+def create_info_window(mlx: Mlx, mlx_ptr):
+    window_ptr = mlx.mlx_new_window(mlx_ptr, 600, 600, "Instructions")
+    mlx.mlx_string_put(
+        mlx_ptr, window_ptr, 10, 10, 0xFF00FF, "Instructions")
+    mlx.mlx_string_put(mlx_ptr, window_ptr, 10, 60, 0xFF00FF,
+                       "Press these keys to do the thing:")
+    mlx.mlx_string_put(mlx_ptr, window_ptr, 10, 100, 0xFF00FF,
+                       "1.  Esc   = Exit the maze and close the window")
+    mlx.mlx_string_put(mlx_ptr, window_ptr, 10, 120, 0xFF00FF,
+                       "2.  s     = Shows or hides the solution path")
+    mlx.mlx_string_put(mlx_ptr, window_ptr, 10, 140, 0xFF00FF,
+                       "3.  c     = Changes the theme of the maze")
+    mlx.mlx_string_put(mlx_ptr, window_ptr, 10, 160, 0xFF00FF,
+                       "4.  r     = Regenerates the same maze")
+    mlx.mlx_string_put(mlx_ptr, window_ptr, 10, 180, 0xFF00FF,
+                       "5.  d     = Regenerates DPS maze (Default maze)")
+    mlx.mlx_hook(window_ptr, 33, 0, lambda any: mlx.mlx_destroy_window(
+        mlx_ptr, window_ptr),
+                 None)
