@@ -2,6 +2,11 @@ from enum import Enum
 from mlx import Mlx
 
 
+class DisplayError(Exception):
+    def __init__(self, msg: str):
+        super().__init__(f"Display Error: {msg}")
+
+
 class TileInfo:
     def __init__(self, maze: list[list[int]]):
         self.image_size = 48

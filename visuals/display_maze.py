@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from visuals.display_errors import DisplayError
+from visuals.display_classes import DisplayError
 from visuals.display_classes import TileInfo, Window, Image, MazeInfo
 from visuals.drawing import draw_maze, draw_solution
 from mlx import Mlx
