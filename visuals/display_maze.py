@@ -72,9 +72,11 @@ def read_hex_map() -> tuple:
 def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
     """When a key is pressed, it will run the process connected to that key.
     Esc (65307) = Exits the program when you press escape
-    r   (114)   = Regenerates the maze
     s   (115)   = Shows or hides the solution path
     c   (99)    = Changes the theme of the maze
+    d   (100)   = Regenerates DPS maze
+    b   (98)    = Regenerates BFS maze
+    p   (112)   = Regenerates Prim's maze
 
     Args:
         key_pressed (int): The key that the user pressed
@@ -89,8 +91,16 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
     draw_data: MazeInfo
 
     mlx, mlx_ptr, window, entry, exit, draw_data = mlx_data
-    if key_pressed == 114:
-        # regenerate maze
+    if key_pressed == 100 or key_pressed == 98 or key_pressed == 112:
+        if key_pressed == 100:
+            # regenerate DFS
+            print("Generating DFS algorithm")
+        elif key_pressed == 98:
+            # regenerate BFS
+            print("Generating BFS algorithm")
+        elif key_pressed == 112:
+            # Regenerate Prim's
+            print("Generating Prim's algorithm")
         mlx.mlx_clear_window(mlx_ptr, window.ptr)
         map, entry, exit, path = read_hex_map()
         draw_data.maze = map
@@ -100,9 +110,9 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
         draw_maze(draw_data, mlx, mlx_ptr)
     elif key_pressed == 65307:
         mlx.mlx_loop_exit(mlx_ptr)
-    elif key_pressed == 115:  # s
+    elif key_pressed == 115:
         draw_solution(draw_data, mlx, mlx_ptr, entry, exit)
-    elif key_pressed == 99:  # c
+    elif key_pressed == 99:
         mlx.mlx_clear_window(mlx_ptr, window.ptr)
         if draw_data.alternate is False:
             draw_data.alternate = True
