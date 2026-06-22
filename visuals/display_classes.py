@@ -69,6 +69,7 @@ class MazeInfo:
         self.exit_coord = exit_coord
         self.path = path
         self.alternate = False
+        self.show_path = False
 
 
 class DrawingData:
@@ -85,6 +86,7 @@ class DrawingData:
         self.mlx_ptr = mlx_ptr
         self.maze = drawing.maze
         self.alternate = drawing.alternate
+        self.show_path = drawing.show_path
         self.path = drawing.path
 
 

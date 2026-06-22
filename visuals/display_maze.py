@@ -111,7 +111,15 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
     elif key_pressed == 65307:
         mlx.mlx_loop_exit(mlx_ptr)
     elif key_pressed == 115:
-        draw_solution(draw_data, mlx, mlx_ptr, entry, exit)
+        if draw_data.show_path is False:
+            draw_data.show_path = True
+            mlx.mlx_clear_window(mlx_ptr, window.ptr)
+            draw_maze(draw_data, mlx, mlx_ptr)
+            draw_solution(draw_data, mlx, mlx_ptr, entry, exit)
+        else:
+            draw_data.show_path = False
+            mlx.mlx_clear_window(mlx_ptr, window.ptr)
+            draw_maze(draw_data, mlx, mlx_ptr)
     elif key_pressed == 99:
         mlx.mlx_clear_window(mlx_ptr, window.ptr)
         if draw_data.alternate is False:

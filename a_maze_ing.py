@@ -6,7 +6,7 @@ from parsing.parsing_errors import (InputError,
                                     ConfigError,
                                     FileError)
 from visuals.display_maze import display_maze
-from visuals.display_errors import DisplayError
+from visuals.display_classes import DisplayError
 
 
 def main() -> None:
