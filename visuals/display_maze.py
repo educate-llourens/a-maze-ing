@@ -74,9 +74,10 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
     Esc (65307) = Exits the program when you press escape
     s   (115)   = Shows or hides the solution path
     c   (99)    = Changes the theme of the maze
-    d   (100)   = Regenerates DPS maze
+    d   (100)   = Regenerates DPS maze (Default maze)
     b   (98)    = Regenerates BFS maze
     p   (112)   = Regenerates Prim's maze
+    w           = Regenerates Wilson maze
 
     Args:
         key_pressed (int): The key that the user pressed
