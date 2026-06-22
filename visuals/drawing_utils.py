@@ -28,7 +28,7 @@ def fill_wall(data: DrawingData, start_x: int, start_y: int, width: int,
               height: int) -> None:
     for offset_y in range(0, height, data.image.wall_height):
         for offset_x in range(0, width, data.image.wall_width):
-            sleep(0.003)
+            sleep(0.001)
             if data.alternate is False:
                 data.mlx.mlx_put_image_to_window(
                     data.mlx_ptr,
@@ -148,14 +148,37 @@ def draw_exit(data: DrawingData, drawing: MazeInfo) -> None:
         )
 
 
-def draw_steps(data: DrawingData, coordinates: tuple) -> None:
+def draw_steps(data: DrawingData, coordinates: tuple, next_step: str, entry: tuple) -> None:
+    inner_x: int
+    inner_y: int
+
     col_index, row_index = coordinates
     col_x = col_index * data.passage
     row_y = row_index * data.passage
+    inner_x = col_x + data.inner
+    inner_y = row_y + data.inner
+    if coordinates != entry:
+        data.mlx.mlx_put_image_to_window(
+            data.mlx_ptr,
+            data.window_ptr,
+            data.image.steps_ptr,
+            col_x + data.wall,
+            row_y + data.wall,
+        )
+    col_x = col_index * data.passage
+    row_y = row_index * data.passage
+    if next_step == "N":
+        inner_y = inner_y - data.wall
+    elif next_step == "E":
+        inner_x = inner_x + data.wall
+    elif next_step == "S":
+        inner_y = inner_y + data.wall
+    elif next_step == "W":
+        inner_x = inner_x - data.wall
     data.mlx.mlx_put_image_to_window(
         data.mlx_ptr,
         data.window_ptr,
         data.image.steps_ptr,
-        col_x + data.wall,
-        row_y + data.wall,
+        inner_x,
+        inner_y,
     )
