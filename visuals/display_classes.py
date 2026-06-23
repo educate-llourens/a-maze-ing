@@ -9,7 +9,7 @@ class DisplayError(Exception):
 
 class TileInfo:
     def __init__(self, maze: list[list[int]]):
-        self.image_size = 48
+        self.image_size = 32
         self.tile: int = self.image_size
         self.wall: int = self.image_size
         self.passage: int = self.tile + self.wall

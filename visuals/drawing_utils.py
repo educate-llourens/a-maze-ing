@@ -94,8 +94,8 @@ def draw_entry(data: DrawingData, drawing: MazeInfo):
             data.mlx_ptr,
             data.window_ptr,
             data.image.start_ptr,
-            col_x + data.wall - 8,
-            row_y + data.wall - 10,
+            col_x + data.wall,
+            row_y + data.wall,
         )
     else:
         data.mlx.mlx_put_image_to_window(
@@ -136,7 +136,7 @@ def draw_exit(data: DrawingData, drawing: MazeInfo) -> None:
             data.window_ptr,
             data.image.end_ptr,
             col_x + data.wall,
-            row_y + data.wall - 10,
+            row_y + data.wall,
         )
     else:
         data.mlx.mlx_put_image_to_window(
