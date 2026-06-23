@@ -135,7 +135,7 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
             draw_maze(draw_data, mlx, mlx_ptr)
 
 
-def mlx_display(maze: list[list[int]], entry_coord, exit_coord,
+def mlx_display(maze: list[list[int]], entry_coord: tuple, exit_coord: tuple,
                 path: str) -> None:
     """Runs the loop to display and interact the window containing the maze.
 
@@ -163,7 +163,14 @@ def mlx_display(maze: list[list[int]], entry_coord, exit_coord,
     mlx.mlx_loop(mlx_ptr)
 
 
-def create_info_window(mlx: Mlx, mlx_ptr):
+def create_info_window(mlx: Mlx, mlx_ptr: Any) -> None:
+    """Creates a seperate window with instructions on how to interact with
+    the maze.
+
+    Args:
+        mlx (Mlx): Instance containing the Python wrapped mlx
+        mlx_ptr (_type_): Pointer to our instance with the graphics server
+    """
     window_ptr = mlx.mlx_new_window(mlx_ptr, 600, 600, "Instructions")
     mlx.mlx_string_put(
         mlx_ptr, window_ptr, 10, 10, 0xFF00FF, "Instructions")
