@@ -9,6 +9,13 @@ from mlx import Mlx
 
 
 def draw_maze(drawing: MazeInfo, mlx: Mlx, mlx_ptr) -> None:
+    """Orchestrates the drawing of the maze
+
+    Args:
+        drawing (MazeInfo): Instance with information for the maze
+        mlx (Mlx): Instance containing the Python wrapped mlx
+        mlx_ptr (_type_): Pointer to our instance with the graphics server
+    """
     data: DrawingData = DrawingData(drawing, mlx, mlx_ptr)
 
     draw_top_border(data)
@@ -21,15 +28,26 @@ def draw_maze(drawing: MazeInfo, mlx: Mlx, mlx_ptr) -> None:
 
 
 def draw_solution(drawing: MazeInfo, mlx, mlx_ptr, entry, exit) -> None:
+    """Draws the solution path
+
+    Args:
+        drawing (MazeInfo): Instance with information for the maze
+        mlx (Mlx): Instance containing the Python wrapped mlx
+        mlx_ptr (Any): Pointer to our instance with the graphics server
+        entry (Tuple): Coordinates to enter the maze
+        exit (Tuple): Coordinates to exit the maze
+    """
     data: DrawingData
     step_x: int
     step_y: int
+    path: str
 
+    path = drawing.path
     data = DrawingData(drawing, mlx, mlx_ptr)
     step_x, step_y = entry
     end_x, end_y = exit
-    i = 0
-    for step in drawing.path:
+    draw_steps(data, (step_x, step_y), path[0], entry)
+    for step_nbr, step in enumerate(path):
         if step == "N":
             step_y = step_y - 1
         elif step == "E":
@@ -38,5 +56,5 @@ def draw_solution(drawing: MazeInfo, mlx, mlx_ptr, entry, exit) -> None:
             step_y = step_y + 1
         elif step == "W":
             step_x = step_x - 1
-        draw_steps(data, (step_x, step_y))
-    # Raise error if last step != exit coord
+        if step_nbr + 1 < len(path):
+            draw_steps(data, (step_x, step_y), path[step_nbr + 1], entry)
