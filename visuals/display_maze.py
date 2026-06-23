@@ -78,6 +78,7 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
     b   (98)    = Regenerates BFS maze
     p   (112)   = Regenerates Prim's maze
     w   (119)   = Regenerates Wilson maze
+    r   (114)   = Regenerate the same maze
 
     Args:
         key_pressed (int): The key that the user pressed
@@ -111,6 +112,9 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
         draw_maze(draw_data, mlx, mlx_ptr)
     elif key_pressed == 65307:
         mlx.mlx_loop_exit(mlx_ptr)
+    elif key_pressed == 114:
+        mlx.mlx_clear_window(mlx_ptr, window.ptr)
+        draw_maze(draw_data, mlx, mlx_ptr)
     elif key_pressed == 115:
         if draw_data.show_path is False:
             draw_data.show_path = True
