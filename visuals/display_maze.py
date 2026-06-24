@@ -74,11 +74,11 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
     Esc (65307) = Exits the program when you press escape
     s   (115)   = Shows or hides the solution path
     c   (99)    = Changes the theme of the maze
-    d   (100)   = Regenerates DPS maze (Default maze)
-    b   (98)    = Regenerates BFS maze
-    p   (112)   = Regenerates Prim's maze
-    w   (119)   = Regenerates Wilson maze
-    r   (114)   = Regenerate the same maze
+    d   (100)   = Generates DPS maze (Default maze)
+    b   (98)    = Generates BFS maze
+    p   (112)   = Generates Prim's maze
+    w   (119)   = Generates Wilson maze
+    r   (114)   = Generates the same maze
 
     Args:
         key_pressed (int): The key that the user pressed
@@ -185,7 +185,7 @@ def create_info_window(mlx: Mlx, mlx_ptr: Any) -> None:
     mlx.mlx_string_put(mlx_ptr, window_ptr, 10, 160, 0xFF00FF,
                        "4.  r     = Regenerates the same maze")
     mlx.mlx_string_put(mlx_ptr, window_ptr, 10, 180, 0xFF00FF,
-                       "5.  d     = Regenerates DPS maze (Default maze)")
+                       "5.  d     = Generates DPS maze (Default maze)")
     mlx.mlx_hook(window_ptr, 33, 0, lambda any: mlx.mlx_destroy_window(
         mlx_ptr, window_ptr),
                  None)
