@@ -44,7 +44,7 @@ def main() -> None:
     # Visuals *****************************************************************
     try:
         display_maze(config_dict)
-    except (DisplayError, FileError) as msg:
+    except Exception as msg:
         print(msg)
         return
 

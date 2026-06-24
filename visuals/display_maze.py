@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-from visuals.display_classes import DisplayError
+from visuals.display_classes import DisplayError, MapError, MlxError
+from parsing.parsing_errors import FileError
 from visuals.display_classes import TileInfo, Window, Image, MazeInfo
 from visuals.drawing import draw_maze, draw_solution
 from mlx import Mlx
@@ -23,18 +24,12 @@ def display_maze(configs: dict) -> None:
     maze: list[list[int]] = []
     path: str = ""
 
-    try:
-        maze, entry_coord, exit_coord, path = read_hex_map()
-    except Exception as msg:
-        raise DisplayError(str(msg))
+    maze, entry_coord, exit_coord, path = read_hex_map()
     if len(maze[0]) != configs["WIDTH"]:
-        raise DisplayError("Maze width does not equal config width")
+        raise MapError("Maze width does not equal config width")
     if len(maze) != configs["HEIGHT"]:
-        raise DisplayError("Maze height does not equal config height")
-    try:
-        mlx_display(maze, entry_coord, exit_coord, path)
-    except Exception as msg:
-        raise DisplayError(str(msg))
+        raise MapError("Maze height does not equal config height")
+    mlx_display(maze, entry_coord, exit_coord, path)
 
 
 def read_hex_map() -> tuple:
@@ -57,15 +52,18 @@ def read_hex_map() -> tuple:
     entry: tuple[int, int]
     exit: tuple[int, int]
 
-    with open(output_file, "r") as maze_file:
-        for line in maze_file:
-            if line == "\n":
-                break
-            row = [int(char, 16) for char in line.strip()]
-            int_map.append(row)
-        entry = create_tuple(maze_file.readline().strip())
-        exit = create_tuple(maze_file.readline().strip())
-        path = maze_file.readline().strip()
+    try:
+        with open(output_file, "r") as maze_file:
+            for line in maze_file:
+                if line == "\n":
+                    break
+                row = [int(char, 16) for char in line.strip()]
+                int_map.append(row)
+            entry = create_tuple(maze_file.readline().strip())
+            exit = create_tuple(maze_file.readline().strip())
+            path = maze_file.readline().strip()
+    except Exception as msg:
+        raise FileError(str(msg))
     return (int_map, entry, exit, path)
 
 
@@ -146,7 +144,11 @@ def mlx_display(maze: list[list[int]], entry_coord: tuple, exit_coord: tuple,
         path (str): The solution path
     """
     mlx: Mlx = Mlx()
-    mlx_ptr = mlx.mlx_init()
+    try:
+        mlx_ptr = mlx.mlx_init()
+    except Exception as msg:
+        raise MlxError("mlx could not initialise with "
+                       f"error message {str(msg)}")
     tile: TileInfo = TileInfo(maze)
     window: Window = Window(tile, mlx, mlx_ptr)
     image: Image = Image(mlx, mlx_ptr)
@@ -154,12 +156,26 @@ def mlx_display(maze: list[list[int]], entry_coord: tuple, exit_coord: tuple,
                                    entry_coord, exit_coord, path)
 
     draw_data.path = path
-    create_info_window(mlx, mlx_ptr)
+    try:
+        create_info_window(mlx, mlx_ptr)
+    except Exception as msg:
+        raise MlxError("Could not create info window with "
+                       f"error message {str(msg)}")
     draw_maze(draw_data, mlx, mlx_ptr)
-    mlx.mlx_hook(window.ptr, 2, 1, on_key_press,
-                 ((mlx, mlx_ptr, window, entry_coord, exit_coord, draw_data)))
-    mlx.mlx_hook(window.ptr, 33, 0, lambda any: mlx.mlx_loop_exit(mlx_ptr),
-                 None)
+    try:
+        mlx.mlx_hook(
+            window.ptr, 2, 1, on_key_press,
+            ((mlx, mlx_ptr, window, entry_coord, exit_coord, draw_data))
+            )
+    except Exception as msg:
+        raise MlxError("Issue with key press hook with "
+                       f"error message {msg}")
+    try:
+        mlx.mlx_hook(window.ptr, 33, 0, lambda any: mlx.mlx_loop_exit(mlx_ptr),
+                     None)
+    except Exception as msg:
+        raise MlxError("Issue with window exit hook with "
+                       f"error message {str(msg)}")
     mlx.mlx_loop(mlx_ptr)
 
 

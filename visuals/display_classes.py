@@ -19,8 +19,54 @@ class DisplayError(Exception):
     Args:
         Exception (_type_)
     """
+    def __init__(self, msg):
+        """Shows errors related to displaying the maze.
+
+        Args:
+            msg (str): The message to display if an error happens
+        """
+        known_error_str = ["Map Error:", "Mlx Error:", "Drawing Error:"]
+        for item in known_error_str:
+            if item in msg:
+                super().__init__(msg)
+                break
+            else:
+                super().__init__(f"Display Error: {msg}")
+
+
+class MapError(DisplayError):
+    """Shows errors related to the map
+
+    Args:
+        DisplayError (Exception):
+    """
     def __init__(self, msg: str):
-        super().__init__(f"Display Error: {msg}")
+        """Creates a map error
+
+        Args:
+            msg (str): Message to display if the error happenss
+        """
+        super().__init__(f"Map Error: {msg}")
+
+
+class MlxError(DisplayError):
+    """Shows errors related to an mlx issue
+
+    Args:
+        DisplayError (Exception):
+    """
+    def __init__(self, msg: str):
+        """Creates a Mlx error
+
+        Args:
+            msg (str): Message to display if the error happens
+        """
+        super().__init__(f"Mlx Error: {msg}")
+
+
+class DrawingError(DisplayError):
+    def __init__(self, msg: str):
+        super().__init__(f"Drawing Error: {msg}")
 
 
 class TileInfo:
