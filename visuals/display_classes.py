@@ -153,7 +153,7 @@ class MazeInfo:
     """
     def __init__(self, maze: list[list[int]], tile: TileInfo, window: Window,
                  image: Image, entry_coord: tuple, exit_coord: tuple,
-                 path: str) -> None:
+                 path: str, is_perfect: bool) -> None:
         """Creates an instance of MazeInfo containing important information
         and instances to create a display for the maze
 
@@ -177,6 +177,7 @@ class MazeInfo:
         self.path = path
         self.alternate = False
         self.show_path = False
+        self.is_perfect = is_perfect
 
 
 class DrawingData:

@@ -6,6 +6,7 @@ from visuals.display_classes import TileInfo, Window, Image, MazeInfo
 from visuals.drawing import draw_maze, draw_solution
 from mlx import Mlx
 from typing import Any
+from mazegen.mazegen import MazeGenerator
 
 
 def display_maze(configs: dict) -> None:
@@ -72,11 +73,12 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
     Esc (65307) = Exits the program when you press escape
     s   (115)   = Shows or hides the solution path
     c   (99)    = Changes the theme of the maze
-    d   (100)   = Regenerates DPS maze (Default maze)
-    b   (98)    = Regenerates BFS maze
-    p   (112)   = Regenerates Prim's maze
-    w   (119)   = Regenerates Wilson maze
-    r   (114)   = Regenerate the same maze
+    i   (105)   = Toggles between imperfect and perfect maze
+    d   (100)   = Generates DPS maze (Default maze)
+    b   (98)    = Generates BFS maze
+    p   (112)   = Generates Prim's maze
+    w   (119)   = Generates Wilson maze
+    r   (114)   = Generates the same maze
 
     Args:
         key_pressed (int): The key that the user pressed
@@ -89,25 +91,38 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
     entry: tuple
     exit: tuple
     draw_data: MazeInfo
+    generate_perfect: MazeGenerator
+    generate_imperfect: MazeGenerator
+    generate_dfs: MazeGenerator
+    generate_bfs: MazeGenerator
+    generate_prim: MazeGenerator
 
     mlx, mlx_ptr, window, entry, exit, draw_data = mlx_data
     if key_pressed == 100 or key_pressed == 98 or key_pressed == 112:
         if key_pressed == 100:
-            # regenerate DFS
-            print("Generating DFS algorithm")
+            generate_dfs = MazeGenerator(
+                draw_data.tile.cols, draw_data.tile.rows,
+                draw_data.entry_coord, draw_data.exit_coord, 0,
+                draw_data.is_perfect)
+            generate_dfs.generate()
+            mlx.mlx_loop_exit(mlx_ptr)
+            display_maze()
         elif key_pressed == 98:
-            # regenerate BFS
-            print("Generating BFS algorithm")
+            generate_bfs = MazeGenerator(
+                draw_data.tile.cols, draw_data.tile.rows,
+                draw_data.entry_coord, draw_data.exit_coord, 6,
+                draw_data.is_perfect)
+            generate_bfs.generate()
+            mlx.mlx_loop_exit(mlx_ptr)
+            display_maze()
         elif key_pressed == 112:
-            # Regenerate Prim's
-            print("Generating Prim's algorithm")
-        mlx.mlx_clear_window(mlx_ptr, window.ptr)
-        map, entry, exit, path = read_hex_map()
-        draw_data.maze = map
-        draw_data.entry = entry
-        draw_data.exit = exit
-        draw_data.path = path
-        draw_maze(draw_data, mlx, mlx_ptr)
+            generate_prim = MazeGenerator(
+                draw_data.tile.cols, draw_data.tile.rows,
+                draw_data.entry_coord, draw_data.exit_coord, 1,
+                draw_data.is_perfect)
+            generate_prim.generate()
+            mlx.mlx_loop_exit(mlx_ptr)
+            display_maze()
     elif key_pressed == 65307:
         mlx.mlx_loop_exit(mlx_ptr)
     elif key_pressed == 114:
@@ -131,10 +146,23 @@ def on_key_press(key_pressed: int, mlx_data: tuple) -> None:
         else:
             draw_data.alternate = False
             draw_maze(draw_data, mlx, mlx_ptr)
+    elif key_pressed == 105:
+        if draw_data.is_perfect is True:
+            draw_data.is_perfect = False
+            generate_imperfect = MazeGenerator(
+                draw_data.tile.cols, draw_data.tile.rows,
+                draw_data.entry_coord, draw_data.exit_coord, 0, False)
+            generate_imperfect.generate()
+        else:
+            draw_data.is_perfect = True
+            generate_perfect = MazeGenerator(
+                draw_data.tile.cols, draw_data.tile.rows,
+                draw_data.entry_coord, draw_data.exit_coord, 0, True)
+            generate_perfect.generate()
 
 
 def mlx_display(maze: list[list[int]], entry_coord: tuple, exit_coord: tuple,
-                path: str) -> None:
+                path: str, is_perfect: bool) -> None:
     """Runs the loop to display and interact the window containing the maze.
 
     Args:
@@ -153,7 +181,7 @@ def mlx_display(maze: list[list[int]], entry_coord: tuple, exit_coord: tuple,
     window: Window = Window(tile, mlx, mlx_ptr)
     image: Image = Image(mlx, mlx_ptr)
     draw_data: MazeInfo = MazeInfo(maze, tile, window, image,
-                                   entry_coord, exit_coord, path)
+                                   entry_coord, exit_coord, path, is_perfect)
 
     draw_data.path = path
     try:
@@ -201,7 +229,7 @@ def create_info_window(mlx: Mlx, mlx_ptr: Any) -> None:
     mlx.mlx_string_put(mlx_ptr, window_ptr, 10, 160, 0xFF00FF,
                        "4.  r     = Regenerates the same maze")
     mlx.mlx_string_put(mlx_ptr, window_ptr, 10, 180, 0xFF00FF,
-                       "5.  d     = Regenerates DPS maze (Default maze)")
+                       "5.  d     = Generates DPS maze (Default maze)")
     mlx.mlx_hook(window_ptr, 33, 0, lambda any: mlx.mlx_destroy_window(
         mlx_ptr, window_ptr),
                  None)
