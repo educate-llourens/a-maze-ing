@@ -49,10 +49,11 @@ def test_commented_config(monkeypatch):
     assert config == {
         "WIDTH": 20,
         "HEIGHT": 25,
-        "ENTRY": (0, 0),
+        "ENTRY": (1, 1),
         "EXIT": (19, 14),
-        "OUTPUT_FILE": "maze.txt",
-        "PERFECT": True
+        "OUTPUT_FILE": "output_file.txt",
+        "PERFECT": True,
+        "SEED": None
     }
 
 
@@ -66,9 +67,9 @@ def test_uncommented_config(monkeypatch):
         "HEIGHT": 25,
         "ENTRY": (0, 0),
         "EXIT": (19, 14),
-        "OUTPUT_FILE": "maze.txt",
+        "OUTPUT_FILE": "output_file.txt",
         "PERFECT": True,
-        "SEED": '42'
+        "SEED": 42
     }
 
 
@@ -81,7 +82,7 @@ def test_check_entry_x():
         "HEIGHT": 25,
         "ENTRY": (-1, 0),
         "EXIT": (19, 14),
-        "OUTPUT_FILE": "maze.txt",
+        "OUTPUT_FILE": "output_file.txt",
         "PERFECT": True
     }
     with pytest.raises(ConfigError):
@@ -97,7 +98,7 @@ def test_check_entry_y():
         "HEIGHT": 25,
         "ENTRY": (0, 30),
         "EXIT": (19, 14),
-        "OUTPUT_FILE": "maze.txt",
+        "OUTPUT_FILE": "output_file.txt",
         "PERFECT": True
     }
     with pytest.raises(ConfigError):
@@ -113,7 +114,7 @@ def test_check_exit_x():
         "HEIGHT": 25,
         "ENTRY": (0, 0),
         "EXIT": (-1, 14),
-        "OUTPUT_FILE": "maze.txt",
+        "OUTPUT_FILE": "output_file.txt",
         "PERFECT": True
     }
     with pytest.raises(ConfigError):
@@ -129,7 +130,7 @@ def test_check_exit_y():
         "HEIGHT": 25,
         "ENTRY": (0, 30),
         "EXIT": (19, 30),
-        "OUTPUT_FILE": "maze.txt",
+        "OUTPUT_FILE": "output_file.txt",
         "PERFECT": True
     }
     with pytest.raises(ConfigError):
@@ -145,7 +146,7 @@ def test_check_entry_matches_exit():
         "HEIGHT": 25,
         "ENTRY": (0, 15),
         "EXIT": (0, 15),
-        "OUTPUT_FILE": "maze.txt",
+        "OUTPUT_FILE": "output_file.txt",
         "PERFECT": True
     }
     with pytest.raises(ConfigError):

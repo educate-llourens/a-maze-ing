@@ -1,6 +1,7 @@
 from enum import Enum
 from mlx import Mlx
 from typing import Any
+from mazegen.cell import Cell
 
 # Classes in file -------------------------------------------------------------
 # 1.  DisplayError
@@ -19,7 +20,8 @@ class DisplayError(Exception):
     Args:
         Exception (_type_)
     """
-    def __init__(self, msg):
+
+    def __init__(self, msg: str) -> None:
         """Shows errors related to displaying the maze.
 
         Args:
@@ -40,7 +42,8 @@ class MapError(DisplayError):
     Args:
         DisplayError (Exception):
     """
-    def __init__(self, msg: str):
+
+    def __init__(self, msg: str) -> None:
         """Creates a map error
 
         Args:
@@ -55,7 +58,8 @@ class MlxError(DisplayError):
     Args:
         DisplayError (Exception):
     """
-    def __init__(self, msg: str):
+
+    def __init__(self, msg: str) -> None:
         """Creates a Mlx error
 
         Args:
@@ -70,8 +74,8 @@ class DrawingError(DisplayError):
 
 
 class TileInfo:
-    """Contains the information for the tile or cell
-    """
+    """Contains the information for the tile or cell"""
+
     def __init__(self, maze: list[list[int]]) -> None:
         """Creates an instance of TileInfo with the necessary information to
         draw the cell.
@@ -80,7 +84,7 @@ class TileInfo:
             maze (list[list[int]]): The maze map as a grid of ints. Each int
             contains information for which walls are open or closed.
         """
-        self.image_size = 32
+        self.image_size = 16
         self.tile: int = self.image_size
         self.wall: int = self.image_size
         self.passage: int = self.tile + self.wall
@@ -89,9 +93,9 @@ class TileInfo:
 
 
 class Window:
-    """Contains imprtant information for displaying a window
-    """
-    def __init__(self, tile: TileInfo, mlx: Mlx, mlx_ptr: Any):
+    """Contains imprtant information for displaying a window"""
+
+    def __init__(self, tile: TileInfo, mlx: Mlx, mlx_ptr: Any) -> None:
         """Creates an instance of a window with important information to
         display it.
 
@@ -102,13 +106,14 @@ class Window:
         """
         self.width = tile.cols * tile.passage + tile.wall
         self.height = tile.rows * tile.passage + tile.wall
-        self.ptr = mlx.mlx_new_window(mlx_ptr, self.width, self.height,
-                                      "A-maze-ing")
+        self.ptr = mlx.mlx_new_window(
+            mlx_ptr, self.width, self.height, "A-maze-ing"
+        )
 
 
 class Image:
-    """Contains all the information for the images to display
-    """
+    """Contains all the information for the images to display"""
+
     def __init__(self, mlx: Mlx, mlx_ptr: Any) -> None:
         """Creates an Image instance for all the images that ca be used
 
@@ -116,44 +121,57 @@ class Image:
             mlx (Mlx): The mlx instance we are using
             mlx_ptr (_type_): Pointer to our instance with the graphics server
         """
-        walls = mlx.mlx_png_file_to_image(mlx_ptr,
-                                          "./visuals/assets/wall.png")
+        walls = mlx.mlx_png_file_to_image(mlx_ptr, "./visuals/files/wall.png")
         self.wall_ptr, self.wall_width, self.wall_height = walls
         if not self.wall_ptr:
             print("Failed to load wall image!")
-        start = mlx.mlx_png_file_to_image(mlx_ptr,
-                                          "./visuals/assets/start.png")
+        start = mlx.mlx_png_file_to_image(mlx_ptr, "./visuals/files/start.png")
         self.start_ptr, self.start_width, self.start_height = start
         if not self.start_ptr:
             print("Failed to load start image!")
-        end = mlx.mlx_png_file_to_image(mlx_ptr,
-                                        "./visuals/assets/end.png")
+        end = mlx.mlx_png_file_to_image(mlx_ptr, "./visuals/files/end.png")
         self.end_ptr, self.end_width, self.end_height = end
         if not self.end_ptr:
             print("Failed to load end image!")
         alt_walls = mlx.mlx_png_file_to_image(
-            mlx_ptr, "./visuals/assets/alt_wall.png")
+            mlx_ptr, "./visuals/files/alt_wall.png"
+        )
         self.alt_wall_ptr, self.alt_walls_width, self.alt_walls_height = (
-            alt_walls)
+            alt_walls
+        )
         alt_start = mlx.mlx_png_file_to_image(
-            mlx_ptr, "./visuals/assets/alt_start.png")
+            mlx_ptr, "./visuals/files/alt_start.png"
+        )
         self.alt_start_ptr, self.alt_start_width, self.alt_start_height = (
-            alt_start)
+            alt_start
+        )
         alt_end = mlx.mlx_png_file_to_image(
-            mlx_ptr, "./visuals/assets/alt_end.png")
-        self.alt_end_ptr, self.alt_end_width, self.alt_end_height = (
-            alt_end)
-        steps = mlx.mlx_png_file_to_image(mlx_ptr, "./visuals/assets/steps.png")
+            mlx_ptr, "./visuals/files/alt_end.png"
+        )
+        self.alt_end_ptr, self.alt_end_width, self.alt_end_height = alt_end
+        steps = mlx.mlx_png_file_to_image(mlx_ptr, "./visuals/files/steps.png")
         self.steps_ptr, self.steps_width, self.steps_height = steps
+        white = mlx.mlx_png_file_to_image(mlx_ptr, "./visuals/files/white.png")
+        self.white_ptr, self.white_width, self.white_height = white
 
 
 class MazeInfo:
     """Contains information and instances to help create a display for
     the maze
     """
-    def __init__(self, maze: list[list[int]], tile: TileInfo, window: Window,
-                 image: Image, entry_coord: tuple, exit_coord: tuple,
-                 path: str, is_perfect: bool) -> None:
+
+    def __init__(
+        self,
+        maze_int: list[list[int]],
+        maze_cell: list[list[Cell]],
+        tile: TileInfo,
+        window: Window,
+        image: Image,
+        entry_coord: tuple[int, int],
+        exit_coord: tuple[int, int],
+        path: str,
+        is_perfect: bool,
+    ) -> None:
         """Creates an instance of MazeInfo containing important information
         and instances to create a display for the maze
 
@@ -168,7 +186,8 @@ class MazeInfo:
             exit_coord (tuple): Coordinate to exit the maze
             path (str): String containing the solution path
         """
-        self.maze = maze
+        self.maze_int = maze_int
+        self.maze_cell = maze_cell
         self.tile = tile
         self.window = window
         self.image = image
@@ -181,8 +200,8 @@ class MazeInfo:
 
 
 class DrawingData:
-    """Contains information for drawing the maze and its solution path
-    """
+    """Contains information for drawing the maze and its solution path"""
+
     def __init__(self, drawing: MazeInfo, mlx: Mlx, mlx_ptr: Any) -> None:
         """Creates an instance of DrawingData containg all the information
         for drawing the maze and its features.
@@ -202,7 +221,7 @@ class DrawingData:
         self.cols = self.tile.cols
         self.mlx = mlx
         self.mlx_ptr = mlx_ptr
-        self.maze = drawing.maze
+        self.maze = drawing.maze_int
         self.alternate = drawing.alternate
         self.show_path = drawing.show_path
         self.path = drawing.path
@@ -214,6 +233,7 @@ class Direction(Enum):
     Args:
         Enum (_type_):
     """
+
     NORTH = 1
     EAST = 2
     SOUTH = 4

@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 
-from parsing.parsing import (parsed_input_dict,
-                             check_parameters)
-from parsing.parsing_errors import (InputError,
-                                    ConfigError,
-                                    FileError)
-from visuals.display_maze import display_maze
-from visuals.display_classes import DisplayError
+import sys
+
+try:
+    from parsing.parsing import parsed_input_dict, check_parameters
+    from parsing.parsing_errors import InputError, ConfigError, FileError
+    from visuals.display_maze import display_maze
+    from mazegen import MazeGenerator, ConfigDict
+    from mazegen.error import MazeError
+except ModuleNotFoundError as e:
+    print(f"{e}, please install this dependency before trying again.")
+    sys.exit(1)
 
 
 def main() -> None:
@@ -24,26 +28,30 @@ def main() -> None:
         Solver:
     """
     # Variables ***************************************************************
-    config_dict: dict = {}
+    config_dict: ConfigDict
 
     # Parsing *****************************************************************
     try:
         config_dict = parsed_input_dict()
         check_parameters(config_dict)
-    except (InputError, ConfigError, FileError) as msg:
+    except (InputError, ConfigError, FileError, ValueError, KeyError) as msg:
         print(msg)
         return
 
     # Generator ***************************************************************
-    # try:
-    #     generator(config_dict)
-    # except (ConfigError, GenerationError) as msg:
-    #     print(msg)
-    #     return
+    try:
+        generator = MazeGenerator(config_dict)
+        generator.generate()
+        generator.solve()
+        generator.output()
+    except (ConfigError, MazeError, ValueError, FileError) as msg:
+        print(msg)
+        return
 
     # Visuals *****************************************************************
     try:
-        display_maze(config_dict)
+        maze_cell = generator.grid
+        display_maze(config_dict, maze_cell)
     except Exception as msg:
         print(msg)
         return

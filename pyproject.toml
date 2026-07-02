@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>61", "weel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mazegen"
+version = "1.0.0"
+description = "Reusable Maze Generator Module"
+requires-python = ">3.10"
+authors = [{ name = "lelouren" }, { name = "odschreu" }]
+dependencies = [""]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["mazegen"]
+
+[[tool.mypy.overrides]]
+module = "mlx.*"
+ignore_missing_imports = true
