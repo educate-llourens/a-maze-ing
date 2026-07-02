@@ -12,29 +12,20 @@ MYPY_FLAGS= --warn-return-any \
 
 all: run
 
+build:
+	python3 -m build
+	mv dist/mazegen-*.whl .
+
 install:
 	python3 -m venv $(VENV_DIR)
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
-# 	$(PIP) install "mlx[cpu]"
 
 run:
 	$(PYTHON) $(MAIN) $(CONFIG)
 
 debug:
 	$(PYTHON) -m pdb $(MAIN) $(CONFIG)
-
-test:
-	pytest
-
-test-input:
-	pytest -m input
-
-test-config:
-	pytest -m config
-
-test-visuals:
-	pytest -m visuals
 
 clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} +
@@ -49,8 +40,8 @@ bonfire:
 
 lint:
 	flake8
-	python3 -m mypy . $(MYPY_FLAGS)
+	mypy . $(MYPY_FLAGS)
 
 lint-strict:
 	flake8
-	$(PYTHON) -m mypy . --strict
+	mypy . --strict
