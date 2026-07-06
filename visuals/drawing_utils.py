@@ -43,6 +43,9 @@ def has_west_wall(cell_value: int) -> bool:
 def fill_wall(
     data: DrawingData, start_x: int, start_y: int, width: int, height: int
 ) -> None:
+def fill_wall(
+    data: DrawingData, start_x: int, start_y: int, width: int, height: int
+) -> None:
     """Fills in the wall at the given x and y coordinates
 
     Args:
@@ -90,6 +93,7 @@ def draw_top_border(data: DrawingData) -> None:
 
 
 def draw_left_border(data: DrawingData) -> None:
+def draw_left_border(data: DrawingData) -> None:
     """Draws the left border of the maze.
 
     Args:
@@ -104,6 +108,7 @@ def draw_left_border(data: DrawingData) -> None:
     fill_wall(data, left_x, data.rows * data.passage, data.wall, data.wall)
 
 
+def draw_internal_walls(data: DrawingData) -> None:
 def draw_internal_walls(data: DrawingData) -> None:
     """Draws the internal walls of the maze.
 
@@ -124,14 +129,21 @@ def draw_internal_walls(data: DrawingData) -> None:
                 fill_wall(
                     data, col_x + data.wall, row_y, data.inner, data.wall
                 )
+                fill_wall(
+                    data, col_x + data.wall, row_y, data.inner, data.wall
+                )
 
             # Vertical segment down the left of the cell interior
             if has_west_wall(cell_value):
                 fill_wall(
                     data, col_x, row_y + data.wall, data.wall, data.inner
                 )
+                fill_wall(
+                    data, col_x, row_y + data.wall, data.wall, data.inner
+                )
 
 
+def draw_entry(data: DrawingData, drawing: MazeInfo) -> None:
 def draw_entry(data: DrawingData, drawing: MazeInfo) -> None:
     """Draws the entrance to the maze.
 
@@ -199,6 +211,7 @@ def draw_exit(data: DrawingData, drawing: MazeInfo) -> None:
         and extra information for drawing the maze.
         drawing (MazeInfo): Instance with information for the maze
     """
+    col_index, row_index = drawing.exit_coord
     col_index, row_index = drawing.exit_coord
     col_x = col_index * data.passage
     row_y = row_index * data.passage
