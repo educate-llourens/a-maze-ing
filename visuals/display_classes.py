@@ -40,7 +40,7 @@ class MapError(DisplayError):
     """Shows errors related to the map
 
     Args:
-        DisplayError (Exception):
+        DisplayError (Exception)
     """
 
     def __init__(self, msg: str) -> None:
@@ -56,7 +56,7 @@ class MlxError(DisplayError):
     """Shows errors related to an mlx issue
 
     Args:
-        DisplayError (Exception):
+        DisplayError (Exception)
     """
 
     def __init__(self, msg: str) -> None:
@@ -69,7 +69,18 @@ class MlxError(DisplayError):
 
 
 class DrawingError(DisplayError):
+    """Shows errors related to a drawing issue
+
+    Args:
+        DisplayError (Exception)
+    """
+
     def __init__(self, msg: str):
+        """Initializes the exception
+
+        Args:
+            msg (str): Message to display if the error happenns
+        """
         super().__init__(f"Drawing Error: {msg}")
 
 
@@ -176,7 +187,8 @@ class MazeInfo:
         and instances to create a display for the maze
 
         Args:
-            maze (list[list[int]]): The maze map as a grid of ints.
+            maze_int (list[list[int]]): The maze map as a grid of ints.
+            maze_cell (list[list[Cell]]): The maze map as a grid of cells.
             tile (TileInfo): Instance with informatio of the tile / cell
             window (Window): Instance with information for displaying
             the window
@@ -231,7 +243,7 @@ class Direction(Enum):
     """Puts the directions in a nice ENUM to help make the directions easier
 
     Args:
-        Enum (_type_):
+        Enum (_type_)
     """
 
     NORTH = 1

@@ -17,13 +17,32 @@ from time import sleep
 
 
 def has_north_wall(cell_value: int) -> bool:
+    """Check whether the north wall of a cell is present.
+
+    Args:
+        cell_value: Hexadecimal wall representation of the cell.
+
+    Returns:
+        True if the north wall is present, otherwise False.
+    """
     return bool(cell_value & Direction.NORTH.value)
 
 
 def has_west_wall(cell_value: int) -> bool:
+    """Check whether the west wall of a cell is present.
+
+    Args:
+        cell_value: Hexadecimal wall representation of the cell.
+
+    Returns:
+        True if the west wall is present, otherwise False.
+    """
     return bool(cell_value & Direction.WEST.value)
 
 
+def fill_wall(
+    data: DrawingData, start_x: int, start_y: int, width: int, height: int
+) -> None:
 def fill_wall(
     data: DrawingData, start_x: int, start_y: int, width: int, height: int
 ) -> None:
@@ -74,6 +93,7 @@ def draw_top_border(data: DrawingData) -> None:
 
 
 def draw_left_border(data: DrawingData) -> None:
+def draw_left_border(data: DrawingData) -> None:
     """Draws the left border of the maze.
 
     Args:
@@ -88,6 +108,7 @@ def draw_left_border(data: DrawingData) -> None:
     fill_wall(data, left_x, data.rows * data.passage, data.wall, data.wall)
 
 
+def draw_internal_walls(data: DrawingData) -> None:
 def draw_internal_walls(data: DrawingData) -> None:
     """Draws the internal walls of the maze.
 
@@ -108,14 +129,21 @@ def draw_internal_walls(data: DrawingData) -> None:
                 fill_wall(
                     data, col_x + data.wall, row_y, data.inner, data.wall
                 )
+                fill_wall(
+                    data, col_x + data.wall, row_y, data.inner, data.wall
+                )
 
             # Vertical segment down the left of the cell interior
             if has_west_wall(cell_value):
                 fill_wall(
                     data, col_x, row_y + data.wall, data.wall, data.inner
                 )
+                fill_wall(
+                    data, col_x, row_y + data.wall, data.wall, data.inner
+                )
 
 
+def draw_entry(data: DrawingData, drawing: MazeInfo) -> None:
 def draw_entry(data: DrawingData, drawing: MazeInfo) -> None:
     """Draws the entrance to the maze.
 
@@ -124,7 +152,7 @@ def draw_entry(data: DrawingData, drawing: MazeInfo) -> None:
         and extra information for drawing the maze.
         drawing (MazeInfo): Instance with information for the maze
     """
-    row_index, col_index = drawing.entry_coord
+    col_index, row_index = drawing.entry_coord
     col_x = col_index * data.passage
     row_y = row_index * data.passage
     if data.alternate is False:
@@ -184,6 +212,7 @@ def draw_exit(data: DrawingData, drawing: MazeInfo) -> None:
         drawing (MazeInfo): Instance with information for the maze
     """
     col_index, row_index = drawing.exit_coord
+    col_index, row_index = drawing.exit_coord
     col_x = col_index * data.passage
     row_y = row_index * data.passage
     sleep(0.05)
@@ -206,9 +235,12 @@ def draw_exit(data: DrawingData, drawing: MazeInfo) -> None:
 
 
 def draw_42(data: DrawingData, drawing: MazeInfo) -> None:
-    """
-    Draws the cells that are part of the 4 or 2
-    with a white tile. These cells do not get walls.
+    """ Draws the cells that are part of the 4 or 2 with a white tile.
+
+    Args:
+        data (DrawingData): Combines information from the MazeInfo instance
+        and extra information for drawing the maze.
+        drawing (MazeInfo): Instance with information for the maze
     """
     maze_cell = drawing.maze_cell
 

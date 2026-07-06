@@ -2,7 +2,7 @@ class MazeError(BaseException):
     """Shows errors related to a maze generation issue
 
     Args:
-        BaseException:
+        BaseException: base exception class.
     """
 
     def __init__(self, msg: str) -> None:

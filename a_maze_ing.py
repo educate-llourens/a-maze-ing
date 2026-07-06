@@ -14,18 +14,15 @@ except ModuleNotFoundError as e:
 
 
 def main() -> None:
-    """The main function that runs the a-maze-ing project. It calls:
-    1. The input and config parser, stores it in a dict
-    2. The config parameter checker
-    3. The maze generator and saves the .txt file
-    4. Visualiser that takes in the .txt file from the generator
-    5. The maze solver
+    """Run the a-maze-ing application.
 
-    Errors: It catches and prints the following errors then exits the program:
-        Parsing: InputError, ConfigError
-        Generator:
-        Visuals: DisplayError, FileError
-        Solver:
+    The application parses the input configuration, validates the
+    parameters, generates and solves a maze, writes the output file,
+    and displays the maze graphically.
+
+    Any expected exceptions raised during parsing, generation, solving,
+    or visualization are caught, reported to the user, and terminate
+    the program gracefully.
     """
     # Variables ***************************************************************
     config_dict: ConfigDict
@@ -55,8 +52,6 @@ def main() -> None:
     except Exception as msg:
         print(msg)
         return
-
-    # Solver ******************************************************************
 
 
 if __name__ == "__main__":

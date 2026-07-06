@@ -15,11 +15,16 @@ all: run
 build:
 	python3 -m build
 	mv dist/mazegen-*.whl .
+	rm -r dist mazegen.egg-info
 
 install:
 	python3 -m venv $(VENV_DIR)
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
+	tar -xvf mlx_CLXV-2.2.tgz
+	cd mlx_CLXV && make
+	$(PIP) install mlx_CLXV/mlx-*.whl
+	$(PIP) install mazegen-*.whl
 
 run:
 	$(PYTHON) $(MAIN) $(CONFIG)
@@ -37,11 +42,14 @@ bonfire:
 	rm -rf .mypy_cache
 	rm -rf $(VENV_DIR)
 	rm -rf .pytest_cache
+	rm -rf mlx_CLXV
 
 lint:
-	flake8
-	mypy . $(MYPY_FLAGS)
+	flake8 --exclude=maze_venv,mlx_CLXV
+	mypy --exclude 'mlx_CLXV/|maze_venv/' . $(MYPY_FLAGS)
+
 
 lint-strict:
-	flake8
-	mypy . --strict
+	flake8 --exclude=maze_venv,mlx_CLXV
+	mypy --exclude 'mlx_CLXV/|maze_venv/' . --strict
+
