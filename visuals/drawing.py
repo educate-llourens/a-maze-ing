@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
 
 from visuals.display_classes import MazeInfo, DrawingData
-from visuals.drawing_utils import (draw_top_border, draw_left_border,
-                                   draw_internal_walls, draw_right_border,
-                                   draw_bottom_border, draw_entry, draw_exit,
-                                   draw_steps)
+from visuals.drawing_utils import (
+    draw_top_border,
+    draw_left_border,
+    draw_internal_walls,
+    draw_right_border,
+    draw_bottom_border,
+    draw_entry,
+    draw_exit,
+    draw_steps,
+    draw_42,
+)
 from mlx import Mlx
+from typing import Any
 
 
-def draw_maze(drawing: MazeInfo, mlx: Mlx, mlx_ptr) -> None:
+def draw_maze(drawing: MazeInfo, mlx: Mlx, mlx_ptr: Any) -> None:
     """Orchestrates the drawing of the maze
 
     Args:
@@ -25,9 +33,16 @@ def draw_maze(drawing: MazeInfo, mlx: Mlx, mlx_ptr) -> None:
     draw_bottom_border(data)
     draw_entry(data, drawing)
     draw_exit(data, drawing)
+    draw_42(data, drawing)
 
 
-def draw_solution(drawing: MazeInfo, mlx, mlx_ptr, entry, exit) -> None:
+def draw_solution(
+    drawing: MazeInfo,
+    mlx: Mlx,
+    mlx_ptr: Any,
+    entry: tuple[int, int],
+    exit: tuple[int, int],
+) -> None:
     """Draws the solution path
 
     Args:

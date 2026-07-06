@@ -12,29 +12,25 @@ MYPY_FLAGS= --warn-return-any \
 
 all: run
 
+build:
+	python3 -m build
+	mv dist/mazegen-*.whl .
+	rm -r dist mazegen.egg-info
+
 install:
 	python3 -m venv $(VENV_DIR)
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
-# 	$(PIP) install "mlx[cpu]"
+	tar -xvf mlx_CLXV-2.2.tgz
+	cd mlx_CLXV && make
+	$(PIP) install mlx_CLXV/mlx-*.whl
+	$(PIP) install mazegen-*.whl
 
 run:
 	$(PYTHON) $(MAIN) $(CONFIG)
 
 debug:
 	$(PYTHON) -m pdb $(MAIN) $(CONFIG)
-
-test:
-	pytest
-
-test-input:
-	pytest -m input
-
-test-config:
-	pytest -m config
-
-test-visuals:
-	pytest -m visuals
 
 clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} +
@@ -46,11 +42,14 @@ bonfire:
 	rm -rf .mypy_cache
 	rm -rf $(VENV_DIR)
 	rm -rf .pytest_cache
+	rm -rf mlx_CLXV
 
 lint:
-	flake8
-	python3 -m mypy . $(MYPY_FLAGS)
+	flake8 --exclude=maze_venv,mlx_CLXV
+	mypy --exclude 'mlx_CLXV/|maze_venv/' . $(MYPY_FLAGS)
+
 
 lint-strict:
-	flake8
-	$(PYTHON) -m mypy . --strict
+	flake8 --exclude=maze_venv,mlx_CLXV
+	mypy --exclude 'mlx_CLXV/|maze_venv/' . --strict
+
