@@ -3,7 +3,6 @@
 import sys
 from .parsing_errors import InputError, ConfigError
 from mazegen import ConfigDict
-from mazegen import ConfigDict
 
 
 def user_input() -> bool:
@@ -20,18 +19,11 @@ def user_input() -> bool:
     """
     if len(sys.argv) != 2:
         raise InputError("Incorrect number of arguments, expected 2")
-        raise InputError("Incorrect number of arguments, expected 2")
     if sys.argv[0].endswith("a_maze_ing.py") is False:
         raise InputError(
             "Program name is not correct. Needs to be 'a_maze_ing.py"
         )
-        raise InputError(
-            "Program name is not correct. Needs to be 'a_maze_ing.py"
-        )
     if sys.argv[1] != "config.txt":
-        raise InputError(
-            "Config file name is incorrect. It needs to be config.txt"
-        )
         raise InputError(
             "Config file name is incorrect. It needs to be config.txt"
         )
@@ -87,33 +79,7 @@ def convert_dict_values(dict_to_format: dict[str, str]) -> ConfigDict:
     }
 
     check_complete(dict_to_format)
-    formatted_dict: ConfigDict = {
-        "WIDTH": 0,
-        "HEIGHT": 0,
-        "ENTRY": (0, 0),
-        "EXIT": (0, 0),
-        "OUTPUT_FILE": "output_file.txt",
-        "PERFECT": False,
-        "SEED": None,
-    }
-
-    check_complete(dict_to_format)
     try:
-        formatted_dict["OUTPUT_FILE"] = dict_to_format["OUTPUT_FILE"]
-        try:
-            formatted_dict["WIDTH"] = int(dict_to_format["WIDTH"])
-            formatted_dict["HEIGHT"] = int(dict_to_format["HEIGHT"])
-        except ValueError:
-            raise ValueError("WIDTH and HEIGHT have to be integer values")
-        try:
-            x1, y1 = tuple(map(int, dict_to_format["ENTRY"].split(",")))
-            x2, y2 = tuple(map(int, dict_to_format["EXIT"].split(",")))
-        except ValueError:
-            raise ValueError(
-                "Coordinate values are incorrect, expecting (int, int)"
-            )
-        formatted_dict["ENTRY"] = (x1, y1)
-        formatted_dict["EXIT"] = (x2, y2)
         formatted_dict["OUTPUT_FILE"] = dict_to_format["OUTPUT_FILE"]
         try:
             formatted_dict["WIDTH"] = int(dict_to_format["WIDTH"])
@@ -148,10 +114,8 @@ def convert_dict_values(dict_to_format: dict[str, str]) -> ConfigDict:
     except KeyError:
         raise KeyError("Could not find a config key in the dictionary")
     return formatted_dict
-    return formatted_dict
 
 
-def config_file() -> ConfigDict:
 def config_file() -> ConfigDict:
     """Reads the config file and puts all the key-value pairs into a
     dictionary. It then calls a function to convert the values into
@@ -162,23 +126,16 @@ def config_file() -> ConfigDict:
         dict: The correctly formatted dictionary
     """
     config_info: dict[str, str] = {}
-    config_info: dict[str, str] = {}
 
     with open(sys.argv[1], "r") as file:
         for line in file:
             if not line or line.startswith("#"):
                 continue
-            if "=" not in line:
-                raise ConfigError(f"{line.strip()} is not a KEY=VALUE pair. "
-                                  "Please refer to the example config.txt in "
-                                  "the README.md")
             key, value = line.split("=", 1)
             config_info[key.strip()] = value.strip()
     return convert_dict_values(config_info)
-    return convert_dict_values(config_info)
 
 
-def parsed_input_dict() -> ConfigDict:
 def parsed_input_dict() -> ConfigDict:
     """It calls the input and config parser then returns the dictionary.
 
@@ -191,14 +148,12 @@ def parsed_input_dict() -> ConfigDict:
         maze generator
     """
     config_dict: ConfigDict
-    config_dict: ConfigDict
 
     user_input()
     config_dict = config_file()
     return config_dict
 
 
-def check_parameters(config_dict: ConfigDict) -> None:
 def check_parameters(config_dict: ConfigDict) -> None:
     """Checks the entry and exit coordinates are within the map bounds as well
     as the entry and exit coordinates are not the same
@@ -222,20 +177,11 @@ def check_parameters(config_dict: ConfigDict) -> None:
     height = config_dict["HEIGHT"]
 
     if entry_x < 0 or entry_x >= width:
-    entry_x, entry_y = config_dict["ENTRY"]
-    exit_x, exit_y = config_dict["EXIT"]
-    width = config_dict["WIDTH"]
-    height = config_dict["HEIGHT"]
-
-    if entry_x < 0 or entry_x >= width:
         raise ConfigError("Entry x-coordinate out of bounds")
-    if entry_y < 0 or entry_y >= height:
     if entry_y < 0 or entry_y >= height:
         raise ConfigError("Entry y-coordinate out of bounds")
     if exit_x < 0 or exit_x >= width:
-    if exit_x < 0 or exit_x >= width:
         raise ConfigError("Exit x-coordinate out of bounds")
-    if exit_y < 0 or exit_y >= height:
     if exit_y < 0 or exit_y >= height:
         raise ConfigError("Exit y-coordinate out of bounds")
     if (entry_x == exit_x) and (entry_y == exit_y):

@@ -7,13 +7,6 @@
 ## Description
 
 a_maze_ing is a maze generator project for the 42 core curriculum. It is a python written program that allows you to generate a maze and its shortest path solution. The maze is visualized with the MiniLibX library. The maze generator will allow you to set entry and exit points, as well as whether you would like a perfect or imperfect maze generated. You can also regenerate or reproduce the same maze by the use of a seed.
-# a_maze_ing
-
-![Screenshot](visuals/files/maze_screenshot.png)
-
-## Description
-
-a_maze_ing is a maze generator project for the 42 core curriculum. It is a python written program that allows you to generate a maze and its shortest path solution. The maze is visualized with the MiniLibX library. The maze generator will allow you to set entry and exit points, as well as whether you would like a perfect or imperfect maze generated. You can also regenerate or reproduce the same maze by the use of a seed.
 
 ## Goals of this project
 **Main goals** <br>
@@ -106,7 +99,6 @@ To generate different mazes, modify `config.txt` or provide a different configur
 
 # Additional Information
 
-
 ## Structure and format of the config file
 
 ```
@@ -114,7 +106,7 @@ WIDTH=20
 HEIGHT=25
 ENTRY=0,0
 EXIT=19,14
-OUTPUT_FILE=output.txt
+OUTPUT_FILE=maze.txt
 PERFECT=True
 #SEED=42
 ```
@@ -210,10 +202,6 @@ We met once per week to discuss our progress and what needed to be done for the 
 - One Github repository where we are both collaborators
 - Splitting of the tasks according to generation or visualisation
 - A simple main file that delegates the different sections of the project. Each section then has its own folder with files and error handling
-- Meeting at least once a week
-- One Github repository where we are both collaborators
-- Splitting of the tasks according to generation or visualisation
-- A simple main file that delegates the different sections of the project. Each section then has its own folder with files and error handling
 
 ### What can be improved
 - Do the check parameters before returning the dict to the main
@@ -222,7 +210,6 @@ We met once per week to discuss our progress and what needed to be done for the 
 - Reading from only the output file instead of the config file as well
 
 ### Tools
-
 
 - `pytest` — unit testing
 - `mypy` — static type checking
@@ -236,9 +223,7 @@ We met once per week to discuss our progress and what needed to be done for the 
 
 #### AI usage
 
-
 Claude:
-
 
 - Breaking down project requirements into daily tasks
 - Explaining concepts such as ctypes and algorithms
