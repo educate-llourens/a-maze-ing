@@ -41,8 +41,8 @@ def has_west_wall(cell_value: int) -> bool:
 
 
 def fill_wall(
-    data: DrawingData, start_x: int, start_y: int, width: int, height: int
-) -> None:
+    data: DrawingData, start_x: int, start_y: int, width: int,
+        height: int) -> None:
     """Fills in the wall at the given x and y coordinates
 
     Args:
